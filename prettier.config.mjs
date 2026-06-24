@@ -9,7 +9,6 @@ const config = {
     useTabs: false,
     printWidth: 100,
     bracketSpacing: true,
-    arrowParens: 'always'
 };
 
 export default config;
