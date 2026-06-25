@@ -4,14 +4,14 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel, FieldGroup } from '@/components/ui/field';
-import { LoginState } from '@/types/auth';
+import { FormState } from '@/types/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { useActionState } from 'react';
 import { LoginAction } from './actions';
 import { FormInit, FormError } from '../_components/motions';
 import { AnimatePresence } from 'motion/react';
 
-const loginInitialState: LoginState = {
+const loginInitialState: FormState = {
   success: false,
   error: null,
 };

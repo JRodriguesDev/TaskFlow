@@ -1,4 +1,4 @@
-export interface LoginState {
+export interface FormState {
   success: boolean;
   error: string | null;
 }

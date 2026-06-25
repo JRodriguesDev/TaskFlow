@@ -1,7 +1,7 @@
 'use server';
 
-import { LoginState } from '@/types/auth';
+import type { FormState } from '@/types/auth';
 
-export const LoginAction = async (_prevState: LoginState, form: FormData): Promise<LoginState> => {
+export const LoginAction = async (_prevState: FormState, form: FormData): Promise<FormState> => {
   return { success: true, error: null };
 };
