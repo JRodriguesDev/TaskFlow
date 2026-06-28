@@ -8,6 +8,8 @@
     "start": "next start",
     "format": "prettier src --write",
     "format:check": "prettier src --check",
+    "compose:up": "docker compose --env-file .env -f docker/compose.yaml up",
+    "compose:down": "docker compose --env-file .env -f docker/compose.yaml down",
     "lint": "eslint"
   },
   "dependencies": {
