@@ -18,7 +18,6 @@ const eslintConfig = defineConfig([
     rules: {
         'camelcase': ['error'],
         'func-style': ['error'],
-        'new-cap': ['error'],
         'no-var': ['error'],
         'prefer-const': ['error'],
         '@typescript-eslint/no-unused-vars': [
