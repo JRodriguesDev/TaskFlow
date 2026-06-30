@@ -12,7 +12,7 @@ export const LoginAction = async (_prevState: FormState, form: FormData): Promis
   if (!validationFields.success) {
     return { success: false, error: validationFields.error.issues[0].message };
   }
-  const {email, password} = validationFields.data
-  
+  const { email, password } = validationFields.data;
+
   return { success: true, error: null };
 };
