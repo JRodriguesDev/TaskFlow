@@ -10,6 +10,7 @@ import { FcGoogle } from 'react-icons/fc';
 import type { FormState } from '@/types/auth';
 import { useActionState } from 'react';
 import { AnimatePresence } from 'motion/react';
+import { signIn } from 'next-auth/react';
 
 const registerInitialState: FormState = {
   success: false,
@@ -90,6 +91,7 @@ const Page = () => {
               variant="outline"
               className="w-full flex items-center gap-2 cursor-pointer"
               disabled={pending}
+              onClick={() => signIn('google', { redirectTo: '' })}
             >
               <FcGoogle size={18} />
               Continuar com Google

@@ -10,6 +10,7 @@ import { useActionState } from 'react';
 import { LoginAction } from './actions';
 import { FormInit, FormError } from '../_components/motions';
 import { AnimatePresence } from 'motion/react';
+import { signIn } from 'next-auth/react';
 
 const loginInitialState: FormState = {
   success: false,
@@ -74,6 +75,7 @@ const Page = () => {
               variant="outline"
               className="w-full flex items-center gap-2 cursor-pointer"
               disabled={pending}
+              onClick={() => signIn('google', { redirectTo: '/' })}
             >
               <FcGoogle size={18} />
               Continuar com Google
