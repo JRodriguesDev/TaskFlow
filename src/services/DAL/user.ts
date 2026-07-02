@@ -13,3 +13,16 @@ export const registerUser = async (data: UserCreateInput) => {
     },
   });
 };
+
+export const loginUser = async (email: string) => {
+  return await prisma.user.findUnique({
+    where: { email: email },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      password: true,
+      image: true,
+    },
+  });
+};

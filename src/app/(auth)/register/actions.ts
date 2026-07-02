@@ -5,6 +5,7 @@ import { registerSchema } from '@/lib/validations/auth';
 import { registerUser } from '@/services/DAL/user';
 import { Prisma } from '@/generated/prisma/client';
 import { hashPassword } from '@/lib/crypto/password';
+import { signIn } from '@/lib/authjs/authjs';
 
 export const registerAction = async (_prevState: FormState, form: FormData): Promise<FormState> => {
   const validationFields = registerSchema.safeParse({
@@ -13,21 +14,19 @@ export const registerAction = async (_prevState: FormState, form: FormData): Pro
     password: form.get('password'),
     confirmPassword: form.get('confirmPassword'),
   });
-
   if (!validationFields.success) {
     return { success: false, error: validationFields.error.issues[0].message };
   }
 
   const { confirmPassword, password, ...rest } = validationFields.data;
-  const hashedPassword = await hashPassword(password)
-  const createUserData  = {
+  const hashedPassword = await hashPassword(password);
+  const createUserData = {
     ...rest,
     password: hashedPassword,
   };
 
   try {
-    await registerUser(createUserData );
-    // userLogin...
+    await registerUser(createUserData);
   } catch (error) {
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
@@ -41,14 +40,13 @@ export const registerAction = async (_prevState: FormState, form: FormData): Pro
           return { success: false, error: 'Email ja existe' };
 
         default:
-          return { success: false, error: 'Problema Interno' };
+          return { success: false, error: error.message };
       }
     }
-    return {
-      success: false,
-      error: 'Erro interno.',
-    };
   }
-
-  return { success: true, error: null };
+  await signIn('credentials', {
+    email: createUserData.email,
+    password: password,
+    redirectTo: '/',
+  });
 };
