@@ -6,6 +6,7 @@ import { registerUser } from '@/services/DAL/user';
 import { Prisma } from '@/generated/prisma/client';
 import { hashPassword } from '@/lib/crypto/password';
 import { signIn } from '@/lib/authjs/authjs';
+import { redirect } from 'next/navigation';
 
 export const registerAction = async (_prevState: FormState, form: FormData): Promise<FormState> => {
   const validationFields = registerSchema.safeParse({
@@ -44,9 +45,11 @@ export const registerAction = async (_prevState: FormState, form: FormData): Pro
       }
     }
   }
+
   await signIn('credentials', {
     email: createUserData.email,
     password: password,
-    redirectTo: '/',
+    redirect: false,
   });
+  redirect('/');
 };

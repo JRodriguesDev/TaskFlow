@@ -13,6 +13,7 @@ const credentials = Credentials({
       email: credentials.email,
       password: credentials.password,
     });
+
     if (!parsed.success) return null;
     const { email, password } = parsed.data;
     const user = await loginUser(email);

@@ -2,6 +2,9 @@
 
 import type { FormState } from '@/types/auth';
 import { loginSchema } from '@/lib/validations/auth';
+import { signIn } from '@/lib/authjs/authjs';
+import { AuthError } from 'next-auth';
+import { redirect } from 'next/navigation';
 
 export const LoginAction = async (_prevState: FormState, form: FormData): Promise<FormState> => {
   const validationFields = loginSchema.safeParse({
@@ -13,6 +16,19 @@ export const LoginAction = async (_prevState: FormState, form: FormData): Promis
     return { success: false, error: validationFields.error.issues[0].message };
   }
   const { email, password } = validationFields.data;
-
-  return { success: true, error: null };
+  try {
+    await signIn('credentials', {
+      email: email,
+      password: password,
+      redirect: false,
+    });
+  } catch (error) {
+    if (error instanceof AuthError) {
+      return {
+        success: false,
+        error: 'Usuário ou senha inválidos',
+      };
+    }
+  }
+  redirect('/');
 };
