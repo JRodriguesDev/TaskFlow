@@ -10,6 +10,7 @@ import {
 import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { signOut } from 'next-auth/react';
 
 const activeClass =
   'border-l-4 border-primary bg-primary/10 text-primary hover:bg-primary/15 hover:text-primary';
@@ -83,6 +84,7 @@ export const Sidebar = () => {
       <div className="border-t p-4">
         <Button
           variant="ghost"
+          onClick={() => signOut({ redirectTo: '/' })}
           className="
             h-11 w-full justify-start gap-3
             rounded-xl

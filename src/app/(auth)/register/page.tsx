@@ -91,7 +91,7 @@ const Page = () => {
               variant="outline"
               className="w-full flex items-center gap-2 cursor-pointer"
               disabled={pending}
-              onClick={() => signIn('google', { redirectTo: '' })}
+              onClick={() => signIn('google', { redirectTo: '/dashboard/overview' })}
             >
               <FcGoogle size={18} />
               Continuar com Google

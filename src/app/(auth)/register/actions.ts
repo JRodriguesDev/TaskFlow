@@ -51,5 +51,5 @@ export const registerAction = async (_prevState: FormState, form: FormData): Pro
     password: password,
     redirect: false,
   });
-  redirect('/');
+  redirect('/dashboard/overview');
 };

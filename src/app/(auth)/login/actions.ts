@@ -30,5 +30,5 @@ export const LoginAction = async (_prevState: FormState, form: FormData): Promis
       };
     }
   }
-  redirect('/');
+  redirect('/dashboard/overview');
 };
