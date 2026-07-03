@@ -82,7 +82,7 @@ export const Sidebar = () => {
           "
         >
           <RiLogoutBoxRLine className="size-5" />
-          Logout
+          Sair
         </Button>
       </div>
     </aside>
