@@ -9,7 +9,7 @@ export const { handlers, signIn, signOut, auth } = nextAuth({
   providers: [Google, Credentials],
   session: {
     maxAge: 30 * 60,
-    strategy: 'jwt'
+    strategy: 'jwt',
   },
   callbacks: {
     jwt({ token, user }) {

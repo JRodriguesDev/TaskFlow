@@ -1,9 +1,12 @@
-const DashBoardLayout = ({children}: {children: React.ReactNode}) => {
-  return (
-    <div>
-      {children}
-    </div>
-  )
-}
+import { Sidebar } from './_components/sideBar';
 
-export default DashBoardLayout
+const DashBoardLayout = ({ children }: { children: React.ReactNode }) => {
+  return (
+    <div className="flex min-h-screen">
+      <Sidebar />
+      <main className="ml-72 flex-1">{children}</main>
+    </div>
+  );
+};
+
+export default DashBoardLayout;
