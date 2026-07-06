@@ -5,7 +5,8 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel, FieldGroup, FieldError } from '@/components/ui/field';
 import { registerAction } from './actions';
-import { FormInit, FormError } from '../_components/motions';
+import { FormError } from '../_components/motions';
+import { FadeIn } from '@/app/_components/motions';
 import { FcGoogle } from 'react-icons/fc';
 import type { FormState } from '@/types/auth';
 import { useActionState } from 'react';
@@ -22,7 +23,7 @@ const Page = () => {
 
   return (
     <div className="flex justify-center px-4 w-1/4">
-      <FormInit>
+      <FadeIn>
         <Card className="w-full">
           <CardHeader className="text-center space-y-1">
             <CardTitle className="text-2xl">TaskFlow</CardTitle>
@@ -104,7 +105,7 @@ const Page = () => {
             </p>
           </CardContent>
         </Card>
-      </FormInit>
+      </FadeIn>
     </div>
   );
 };
