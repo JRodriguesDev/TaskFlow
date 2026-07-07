@@ -8,18 +8,13 @@ import { registerAction } from './actions';
 import { FormError } from '../_components/motions';
 import { FadeIn } from '@/app/_components/motions';
 import { FcGoogle } from 'react-icons/fc';
-import type { FormState } from '@/types/auth';
 import { useActionState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { signIn } from 'next-auth/react';
-
-const registerInitialState: FormState = {
-  success: false,
-  error: null,
-};
+import { formState } from '@/states/formState';
 
 const Page = () => {
-  const [state, formAction, pending] = useActionState(registerAction, registerInitialState);
+  const [state, formAction, pending] = useActionState(registerAction, formState);
 
   return (
     <div className="flex justify-center px-4 w-1/4">

@@ -4,7 +4,6 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel, FieldGroup } from '@/components/ui/field';
-import { FormState } from '@/types/auth';
 import { FcGoogle } from 'react-icons/fc';
 import { useActionState } from 'react';
 import { LoginAction } from './actions';
@@ -12,14 +11,10 @@ import { FormError } from '../_components/motions';
 import { FadeIn } from '@/app/_components/motions';
 import { AnimatePresence } from 'motion/react';
 import { signIn } from 'next-auth/react';
-
-const loginInitialState: FormState = {
-  success: false,
-  error: null,
-};
+import { formState } from '@/states/formState';
 
 const Page = () => {
-  const [state, formAction, pending] = useActionState(LoginAction, loginInitialState);
+  const [state, formAction, pending] = useActionState(LoginAction, formState);
 
   return (
     <div className=" flex justify-center px-4 w-1/4">
