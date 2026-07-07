@@ -2,6 +2,7 @@ import 'server-only';
 
 import { prisma } from '@/lib/prisma/prisma';
 import type { UserCreateInput } from '@/generated/prisma/models';
+import type { updateUserInteface } from '@/types/user';
 
 export const registerUser = async (data: UserCreateInput) => {
   return await prisma.user.create({
@@ -24,5 +25,13 @@ export const loginUser = async (email: string) => {
       password: true,
       image: true,
     },
+  });
+};
+
+export const updateUser = async (id: string, data: updateUserInteface) => {
+  return await prisma.user.update({
+    where: { id: id },
+    data,
+    select: { id: true, name: true },
   });
 };
