@@ -13,7 +13,7 @@ export const LoginAction = async (_prevState: FormState, form: FormData): Promis
   });
 
   if (!validationFields.success) {
-    return { success: false, error: validationFields.error.issues[0].message };
+    return { message: validationFields.error.issues[0].message };
   }
   const { email, password } = validationFields.data;
   try {
@@ -25,8 +25,7 @@ export const LoginAction = async (_prevState: FormState, form: FormData): Promis
   } catch (error) {
     if (error instanceof AuthError) {
       return {
-        success: false,
-        error: 'Usuário ou senha inválidos',
+        message: 'Usuário ou senha inválidos',
       };
     }
   }

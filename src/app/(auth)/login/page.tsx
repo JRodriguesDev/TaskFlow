@@ -47,7 +47,9 @@ const Page = () => {
               </form>
             </FieldGroup>
 
-            <AnimatePresence>{state.error && <FormError>{state.error}</FormError>}</AnimatePresence>
+            <AnimatePresence>
+              {state.message && <FormError>{state.message}</FormError>}
+            </AnimatePresence>
 
             {/* LOGIN BUTTON */}
             <Button

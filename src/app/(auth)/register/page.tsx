@@ -68,7 +68,9 @@ const Page = () => {
               </form>
             </FieldGroup>
 
-            <AnimatePresence>{state.error && <FormError>{state.error}</FormError>}</AnimatePresence>
+            <AnimatePresence>
+              {state.message && <FormError>{state.message}</FormError>}
+            </AnimatePresence>
 
             {/* REGISTER BUTTON */}
             <Button className="w-full cursor-pointer" form="registerForm" disabled={pending}>

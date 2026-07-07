@@ -8,8 +8,11 @@ export const updateProfileAction = async (
   const validation = profileNameSchema.safeParse({
     name: form.get('name'),
   });
-  if (!validation.success) return { success: false, error: validation.error.issues[0].message };
+  if (!validation.success)
+    return {
+      errors: { name: validation.error.issues[0].message },
+    };
   const name = validation.data.name;
 
-  return { success: false, error: null };
+  return { message: '' };
 };

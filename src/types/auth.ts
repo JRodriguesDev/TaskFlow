@@ -1,4 +1,8 @@
 export interface FormState {
-  success: boolean;
-  error: string | null;
+  errors?: {
+    name?: string;
+    email?: string;
+    password?: string;
+  };
+  message?: string;
 }

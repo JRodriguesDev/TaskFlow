@@ -16,7 +16,7 @@ export const registerAction = async (_prevState: FormState, form: FormData): Pro
     confirmPassword: form.get('confirmPassword'),
   });
   if (!validationFields.success) {
-    return { success: false, error: validationFields.error.issues[0].message };
+    return { message: validationFields.error.issues[0].message };
   }
 
   const { confirmPassword, password, ...rest } = validationFields.data;
@@ -32,16 +32,16 @@ export const registerAction = async (_prevState: FormState, form: FormData): Pro
     if (error instanceof Prisma.PrismaClientKnownRequestError) {
       switch (error.code) {
         case 'P1001':
-          return { success: false, error: 'Servidor inativo tente novamente mais tarde' };
+          return { message: 'Servidor inativo tente novamente mais tarde' };
 
         case 'P1002':
-          return { success: false, error: 'Tempo Limite Excedio tente novamente mais tarde' };
+          return { message: 'Tempo Limite Excedio tente novamente mais tarde' };
 
         case 'P2002':
-          return { success: false, error: 'Email ja existe' };
+          return { message: 'Email ja existe' };
 
         default:
-          return { success: false, error: error.message };
+          return { message: error.message };
       }
     }
   }

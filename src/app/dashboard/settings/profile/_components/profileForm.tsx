@@ -13,10 +13,15 @@ export const ProfileForm = ({ name, email }: { name: string; email: string }) =>
 
   return (
     <form className="space-y-5" action={formAction}>
-      <Field className="space-y-2" data-invalid={!!state.error}>
+      <Field className="space-y-2" data-invalid={!!state.errors?.name}>
         <FieldLabel className="text-sm font-medium">Nome</FieldLabel>
-        <Input name="name" defaultValue={name} disabled={pending} aria-invalid={!!state.error} />
-        {state.error && <FieldDescription>{state.error}</FieldDescription>}
+        <Input
+          name="name"
+          defaultValue={name}
+          disabled={pending}
+          aria-invalid={!!state.errors?.name}
+        />
+        {state.errors?.name && <FieldDescription>{state.errors?.name}</FieldDescription>}
       </Field>
       <Field className="space-y-2">
         <FieldLabel className="text-sm font-medium">Email</FieldLabel>
