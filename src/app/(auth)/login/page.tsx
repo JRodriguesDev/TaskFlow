@@ -7,7 +7,7 @@ import { Field, FieldLabel, FieldGroup } from '@/components/ui/field';
 import { FcGoogle } from 'react-icons/fc';
 import { useActionState } from 'react';
 import { LoginAction } from './actions';
-import { FormError } from '../_components/motions';
+import { FormError } from '@/app/_components/motions';
 import { FadeIn } from '@/app/_components/motions';
 import { AnimatePresence } from 'motion/react';
 import { signIn } from 'next-auth/react';

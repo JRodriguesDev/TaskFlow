@@ -7,6 +7,8 @@ import { Button } from '@/components/ui/button';
 import { formState } from '@/states/formState';
 import { Spinner } from '@/components/ui/spinner';
 import { Field, FieldLabel, FieldDescription } from '@/components/ui/field';
+import { AnimatePresence } from 'motion/react';
+import { FormError } from '@/app/_components/motions';
 
 export const ProfileForm = ({ name, email }: { name: string; email: string }) => {
   const [state, formAction, pending] = useActionState(updateProfileAction, formState);
@@ -21,7 +23,9 @@ export const ProfileForm = ({ name, email }: { name: string; email: string }) =>
           disabled={pending}
           aria-invalid={!!state.errors?.name}
         />
-        {state.errors?.name && <FieldDescription>{state.errors?.name}</FieldDescription>}
+        <AnimatePresence>
+          {state.errors?.name && <FormError>{state.errors?.name}</FormError>}
+        </AnimatePresence>
       </Field>
       <Field className="space-y-2">
         <FieldLabel className="text-sm font-medium">Email</FieldLabel>

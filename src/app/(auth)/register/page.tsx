@@ -5,7 +5,7 @@ import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
 import { Field, FieldLabel, FieldGroup, FieldError } from '@/components/ui/field';
 import { registerAction } from './actions';
-import { FormError } from '../_components/motions';
+import { FormError } from '@/app/_components/motions';
 import { FadeIn } from '@/app/_components/motions';
 import { FcGoogle } from 'react-icons/fc';
 import { useActionState } from 'react';
