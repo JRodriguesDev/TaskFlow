@@ -9,9 +9,22 @@ import { Spinner } from '@/components/ui/spinner';
 import { Field, FieldLabel, FieldDescription } from '@/components/ui/field';
 import { AnimatePresence } from 'motion/react';
 import { FormError } from '@/app/_components/motions';
+import { useSession } from 'next-auth/react';
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
 
 export const ProfileForm = ({ name, email }: { name: string; email: string }) => {
   const [state, formAction, pending] = useActionState(updateProfileAction, formState);
+  const { update } = useSession();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (!state.message) return;
+    (async () => {
+      await update({ name: state.message });
+      router.refresh();
+    })();
+  }, [state.message]);
 
   return (
     <form className="space-y-5" action={formAction}>

@@ -29,5 +29,5 @@ export const updateProfileAction = async (
     name: validation.data.name,
   });
 
-  return { message: '' };
+  return { message: validation.data.name };
 };

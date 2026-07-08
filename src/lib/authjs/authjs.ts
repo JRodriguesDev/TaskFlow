@@ -12,14 +12,18 @@ export const { handlers, signIn, signOut, auth } = nextAuth({
     strategy: 'jwt',
   },
   callbacks: {
-    jwt({ token, user }) {
+    jwt({ token, user, trigger, session }) {
       if (user) {
         token.id = user.id;
       }
+
+      if (trigger === 'update' && session.name) token.name = session.name;
+
       return token;
     },
     session({ session, token }) {
       session.user.id = token.id as string;
+      session.user.name = token.name;
       return session;
     },
   },

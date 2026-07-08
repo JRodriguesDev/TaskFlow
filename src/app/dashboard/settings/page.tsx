@@ -5,6 +5,7 @@ import { auth } from '@/lib/authjs/authjs';
 import Image from 'next/image';
 import { redirect } from 'next/navigation';
 import { FadeIn } from '@/app/_components/motions';
+import Link from 'next/link';
 
 export const Page = async () => {
   const session = await auth();
@@ -47,7 +48,9 @@ export const Page = async () => {
             </CardContent>
 
             <div className="p-4 pt-0">
-              <Button className="w-full cursor-pointer">Editar Perfil</Button>
+              <Link href="/dashboard/settings/profile">
+                <Button className="w-full cursor-pointer">Editar Perfil</Button>
+              </Link>
             </div>
           </Card>
 
