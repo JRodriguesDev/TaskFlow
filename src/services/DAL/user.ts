@@ -35,3 +35,10 @@ export const updateUser = async (id: string, data: updateUserInteface) => {
     select: { id: true, name: true },
   });
 };
+
+export const userAccount = async (userId: string) => {
+  return !!(await prisma.account.findFirst({
+    where: { userId: userId },
+    select: { provider: true },
+  }));
+};

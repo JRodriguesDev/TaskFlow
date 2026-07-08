@@ -29,7 +29,7 @@ export const Page = async () => {
                   className="h-full w-full object-cover"
                 />
               ) : (
-                <RiUser3Line className="size-8 text-muted-foreground" />
+                <RiUser3Line className="size-20 text-muted-foreground" />
               )}
             </div>
             <h1 className="text-xl font-semibold">{name}</h1>

@@ -1,19 +1,22 @@
 import Image from 'next/image';
 import { RiGoogleFill, RiCalendarLine, RiUser3Line } from 'react-icons/ri';
 
-import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
-import { Badge } from '@/components/ui/badge';
 import { Separator } from '@/components/ui/separator';
 import { auth } from '@/lib/authjs/authjs';
 import { FadeIn } from '@/app/_components/motions';
 import { redirect } from 'next/navigation';
 import { ProfileForm } from './_components/profileForm';
+import { userAccount } from '@/services/DAL/user';
+import { GoogleAccountButton } from './_components/googleAccountButton';
+import { GoogleCalendarButton } from './_components/googleCalendarButton';
 
 const Page = async () => {
   const session = await auth();
   if (!session?.user) redirect('/login');
-  const { name, email, image } = session.user;
+  const { id, name, email, image } = session.user;
+
+  const hasGoogleAccount = await userAccount(id!);
 
   return (
     <div className="min-h-screen">
@@ -61,10 +64,8 @@ const Page = async () => {
             <CardHeader>
               <CardTitle>Contas Vinculadas</CardTitle>
             </CardHeader>
-
             <CardContent className="space-y-6">
               {/* Google */}
-
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <RiGoogleFill className="size-6 text-red-500" />
@@ -72,23 +73,15 @@ const Page = async () => {
                   <div>
                     <h3 className="font-medium">Google</h3>
 
-                    <p className="text-sm text-muted-foreground">Login com Google</p>
+                    <p className="text-sm text-muted-foreground">Conta utilizada para login.</p>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <Badge>Vinculado</Badge>
-
-                  <Button variant="outline" className="cursor-pointer">
-                    Desvincular
-                  </Button>
-                </div>
+                <GoogleAccountButton hasAccount={hasGoogleAccount} />
               </div>
 
               <Separator />
 
-              {/* Calendar */}
-
+              {/* Google Calendar */}
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-3">
                   <RiCalendarLine className="size-6 text-primary" />
@@ -97,16 +90,11 @@ const Page = async () => {
                     <h3 className="font-medium">Google Calendar</h3>
 
                     <p className="text-sm text-muted-foreground">
-                      Sincronize suas tarefas automaticamente.
+                      Sincronize automaticamente suas tarefas com o Google Calendar.
                     </p>
                   </div>
                 </div>
-
-                <div className="flex items-center gap-3">
-                  <Badge variant="secondary">Não vinculado</Badge>
-
-                  <Button className="cursor-pointer">Vincular</Button>
-                </div>
+                <GoogleCalendarButton />
               </div>
             </CardContent>
           </Card>
