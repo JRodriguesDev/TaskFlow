@@ -96,7 +96,7 @@ const Page = () => {
             </Button>
             <p className="text-sm text-center text-muted-foreground">
               Já tem conta?{' '}
-              <a href="/login" className="text-primary hover:underline">
+              <a href="/auth/login" className="text-primary hover:underline">
                 Entrar
               </a>
             </p>

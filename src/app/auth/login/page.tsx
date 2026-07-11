@@ -80,7 +80,7 @@ const Page = () => {
             </Button>
             <p className="text-sm text-center text-muted-foreground">
               Não tem conta?{' '}
-              <a href="/register" className="text-primary hover:underline">
+              <a href="/auth/register" className="text-primary hover:underline">
                 Criar conta
               </a>
             </p>
