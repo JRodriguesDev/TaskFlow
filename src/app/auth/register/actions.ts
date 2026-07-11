@@ -1,12 +1,13 @@
 'use server';
 
-import { FormState } from '@/types/auth';
+import { FormState } from '@/types/form';
 import { registerSchema } from '@/lib/validations/auth';
 import { registerUser } from '@/services/DAL/user';
-import { Prisma } from '@/generated/prisma/client';
 import { hashPassword } from '@/lib/crypto/password';
 import { signIn } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
+import { authErrors } from '@/lib/authjs/error';
+import { prismaErrors } from '@/lib/prisma/error';
 
 export const registerAction = async (_prevState: FormState, form: FormData): Promise<FormState> => {
   const validationFields = registerSchema.safeParse({
@@ -29,21 +30,7 @@ export const registerAction = async (_prevState: FormState, form: FormData): Pro
   try {
     await registerUser(createUserData);
   } catch (error) {
-    if (error instanceof Prisma.PrismaClientKnownRequestError) {
-      switch (error.code) {
-        case 'P1001':
-          return { message: 'Servidor inativo tente novamente mais tarde' };
-
-        case 'P1002':
-          return { message: 'Tempo Limite Excedio tente novamente mais tarde' };
-
-        case 'P2002':
-          return { message: 'Email ja existe' };
-
-        default:
-          return { message: error.message };
-      }
-    }
+    return { message: authErrors(error) ?? prismaErrors(error) ?? 'Error inteno' };
   }
 
   await signIn('credentials', {

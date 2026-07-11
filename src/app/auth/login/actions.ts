@@ -1,10 +1,11 @@
 'use server';
 
-import type { FormState } from '@/types/auth';
+import type { FormState } from '@/types/form';
 import { loginSchema } from '@/lib/validations/auth';
 import { signIn } from '@/lib/authjs/authjs';
-import { AuthError } from 'next-auth';
 import { redirect } from 'next/navigation';
+import { authErrors } from '@/lib/authjs/error';
+import { prismaErrors } from '@/lib/prisma/error';
 
 export const LoginAction = async (_prevState: FormState, form: FormData): Promise<FormState> => {
   const validationFields = loginSchema.safeParse({
@@ -23,11 +24,7 @@ export const LoginAction = async (_prevState: FormState, form: FormData): Promis
       redirect: false,
     });
   } catch (error) {
-    if (error instanceof AuthError) {
-      return {
-        message: 'Usuário ou senha inválidos',
-      };
-    }
+    return { message: authErrors(error) ?? prismaErrors(error) ?? 'Error inteno' };
   }
   redirect('/dashboard/overview');
 };

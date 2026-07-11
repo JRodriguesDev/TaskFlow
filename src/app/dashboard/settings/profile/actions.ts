@@ -1,10 +1,11 @@
 'use server';
 
-import type { FormState } from '@/types/auth';
+import type { FormState } from '@/types/form';
 import { profileNameSchema } from '@/lib/validations/settings';
 import { auth } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
 import { updateUser } from '@/services/DAL/user';
+import { prismaErrors } from '@/lib/prisma/error';
 
 export const updateProfileAction = async (
   _prevState: FormState,
@@ -25,9 +26,12 @@ export const updateProfileAction = async (
       errors: { name: validation.error.issues[0].message },
     };
 
-  await updateUser(userId, {
-    name: validation.data.name,
-  });
-
+  try {
+    await updateUser(userId, {
+      name: validation.data.name,
+    });
+  } catch (error) {
+    return { errors: { name: prismaErrors(error) ?? 'Error interno' } };
+  }
   return { message: validation.data.name };
 };

@@ -1,4 +1,4 @@
-import type { FormState } from '@/types/auth';
+import type { FormState } from '@/types/form';
 
 export const formState: FormState = {
   success: false,
