@@ -1,10 +1,17 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 
-const message = 'A conta Google selecionada possui um e-mail diferente da sua conta atual.';
-
 const Page = async ({ searchParams }: { searchParams: Promise<{ error?: string }> }) => {
   const { error } = await searchParams;
+  let message = '';
+
+  switch (error) {
+    case 'EmailMismatch':
+      message = 'A conta Google selecionada possui um e-mail diferente da sua conta atual.';
+      break;
+    default:
+      message = 'Ocorreu um Erro interno';
+  }
 
   return (
     <div className="flex min-h-screen items-center justify-center">
