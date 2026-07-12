@@ -42,3 +42,10 @@ export const userAccount = async (userId: string) => {
     select: { provider: true },
   }));
 };
+
+export const userHasPassword = async (userId: string) => {
+  return !!(await prisma.user.findUnique({
+    where: { id: userId },
+    select: { password: true },
+  }));
+};

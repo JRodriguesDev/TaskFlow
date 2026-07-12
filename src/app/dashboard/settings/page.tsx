@@ -9,7 +9,7 @@ import Link from 'next/link';
 
 export const Page = async () => {
   const session = await auth();
-  if (!session?.user) redirect('/login');
+  if (!session?.user) redirect('/auth/login');
   const { name, email, image } = session.user;
 
   return (
@@ -67,9 +67,11 @@ export const Page = async () => {
             </CardContent>
 
             <div className="p-4 pt-0">
-              <Button variant="outline" className="w-full cursor-pointer">
-                Gerenciar Segurança
-              </Button>
+              <Link href="/dashboard/settings/security">
+                <Button variant="outline" className="w-full cursor-pointer">
+                  Gerenciar Segurança
+                </Button>
+              </Link>
             </div>
           </Card>
         </div>

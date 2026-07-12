@@ -13,7 +13,7 @@ export const updateProfileAction = async (
 ): Promise<FormState> => {
   const session = await auth();
 
-  if (!session?.user?.id) redirect('/login');
+  if (!session?.user?.id) redirect('/auth/login');
 
   const userId = session.user.id;
 

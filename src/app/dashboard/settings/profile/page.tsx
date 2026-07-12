@@ -13,7 +13,7 @@ import { GoogleCalendarButton } from './_components/googleCalendarButton';
 
 const Page = async () => {
   const session = await auth();
-  if (!session?.user) redirect('/login');
+  if (!session?.user) redirect('/auth/login');
   const { id, name, email, image } = session.user;
 
   const hasGoogleAccount = await userAccount(id!);
