@@ -44,8 +44,10 @@ export const userAccount = async (userId: string) => {
 };
 
 export const userHasPassword = async (userId: string) => {
-  return !!(await prisma.user.findUnique({
-    where: { id: userId },
-    select: { password: true },
-  }));
+  return !!(
+    await prisma.user.findUnique({
+      where: { id: userId },
+      select: { password: true },
+    })
+  )?.password;
 };

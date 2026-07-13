@@ -12,7 +12,6 @@ const Page = async () => {
   const session = await auth();
   if (!session?.user) redirect('/auth/login');
   const { id } = session.user;
-
   const hasPassword = await userHasPassword(id!);
 
   return (

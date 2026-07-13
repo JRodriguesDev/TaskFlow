@@ -2,8 +2,29 @@
 
 import { auth } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
+import type { FormState } from '@/types/form';
+import { passwordSchema } from '@/lib/validations/settings';
+import { hashPassword } from '@/lib/crypto/password';
+import { updateUser } from '@/services/DAL/user';
+import { prismaErrors } from '@/lib/prisma/error';
 
-export const updatePassword = async () => {
+export const updatePassword = async (_prevState: FormState, data: FormData): Promise<FormState> => {
   const session = await auth();
   if (!session?.user?.id) redirect('/auth/login');
+  const userId = session.user.id;
+
+  const validation = passwordSchema.safeParse({
+    password: data.get('password'),
+    confirmPassword: data.get('confirmPassword'),
+  });
+  if (!validation.success) return { message: validation.error.issues[0].message };
+  const newPassowrd = validation.data.password;
+  const hashedPassword = await hashPassword(newPassowrd);
+  try {
+    await updateUser(userId, { password: hashedPassword });
+  } catch (error) {
+    return { message: prismaErrors(error) ?? 'Error interno' };
+  }
+
+  return { success: true };
 };
