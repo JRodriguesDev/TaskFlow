@@ -7,7 +7,7 @@ import { auth } from '@/lib/authjs/authjs';
 import { FadeIn } from '@/app/_components/motions';
 import { redirect } from 'next/navigation';
 import { ProfileForm } from './_components/profileForm';
-import { userAccount } from '@/services/DAL/user';
+import { userHasAccount } from '@/services/DAL/user';
 import { GoogleAccountButton } from './_components/googleAccountButton';
 import { GoogleCalendarButton } from './_components/googleCalendarButton';
 
@@ -16,7 +16,7 @@ const Page = async () => {
   if (!session?.user) redirect('/auth/login');
   const { id, name, email, image } = session.user;
 
-  const hasGoogleAccount = await userAccount(id!);
+  const hasGoogleAccount = await userHasAccount(id!);
 
   return (
     <div className="min-h-screen">

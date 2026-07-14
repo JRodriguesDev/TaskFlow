@@ -2,7 +2,7 @@
 
 import { FormState } from '@/types/form';
 import { registerSchema } from '@/lib/validations/auth';
-import { registerUser } from '@/services/DAL/user';
+import { registerUser } from '@/services/DAL/auth';
 import { hashPassword } from '@/lib/crypto/password';
 import { signIn } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';

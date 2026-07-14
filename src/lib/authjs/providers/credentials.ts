@@ -1,5 +1,5 @@
 import Credentials from 'next-auth/providers/credentials';
-import { loginUser } from '@/services/DAL/user';
+import { loginUser } from '@/services/DAL/auth';
 import { loginSchema } from '@/lib/validations/auth';
 import { verifyPassword } from '@/lib/crypto/password';
 
