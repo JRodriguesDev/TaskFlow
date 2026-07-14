@@ -1,9 +1,9 @@
 import { NextAuthConfig } from 'next-auth';
 import { auth } from '../authjs';
 
-type signInType = NonNullable<NextAuthConfig['callbacks']>['signIn'];
+type SignInType = NonNullable<NextAuthConfig['callbacks']>['signIn'];
 
-export const signInCallback: signInType = async ({ profile }) => {
+export const signInCallback: SignInType = async ({ profile }) => {
   const session = await auth();
   if (!session) return true;
 

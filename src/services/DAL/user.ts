@@ -2,6 +2,7 @@ import 'server-only';
 
 import { prisma } from '@/lib/prisma/prisma';
 import type { updateUserInteface } from '@/types/user';
+import { cacheTag } from 'next/cache';
 
 export const updateUser = async (id: string, data: updateUserInteface) => {
   const user = await prisma.user.update({
@@ -23,6 +24,8 @@ export const userHasAccount = async (userId: string) => {
 };
 
 export const userHasPassword = async (userId: string) => {
+  'use cache';
+  cacheTag(`userHasPassword-${userId}`);
   const user = await prisma.user.findUnique({
     where: { id: userId },
     select: { password: true },

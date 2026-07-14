@@ -1,8 +1,8 @@
 import { NextAuthConfig } from 'next-auth';
 
-type sessionType = NonNullable<NextAuthConfig['callbacks']>['session'];
+type SessionType = NonNullable<NextAuthConfig['callbacks']>['session'];
 
-export const sessionCallback: sessionType = ({ session, token }) => {
+export const sessionCallback: SessionType = ({ session, token }) => {
   session.user.id = token.id as string;
   session.user.name = token.name;
   return session;

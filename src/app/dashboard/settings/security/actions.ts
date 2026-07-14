@@ -7,6 +7,7 @@ import { passwordSchema } from '@/lib/validations/settings';
 import { hashPassword } from '@/lib/crypto/password';
 import { updateUser } from '@/services/DAL/user';
 import { prismaErrors } from '@/lib/prisma/error';
+import { updateTag } from 'next/cache';
 
 export const updatePassword = async (_prevState: FormState, data: FormData): Promise<FormState> => {
   const session = await auth();
@@ -25,6 +26,7 @@ export const updatePassword = async (_prevState: FormState, data: FormData): Pro
   } catch (error) {
     return { message: prismaErrors(error) ?? 'Error interno' };
   }
+  updateTag(`userHasPassword-${userId}`);
 
   return { success: true };
 };
