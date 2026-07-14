@@ -10,6 +10,6 @@ export const signInCallback: SignInType = async ({ profile }) => {
   const currentEmail = session.user?.email;
   const googleEmail = profile?.email;
 
-  if (currentEmail !== googleEmail) return '/auth/error?error=EmailMismatch';
+  if (currentEmail !== googleEmail) return '/errors/auth?error=EmailMismatch';
   return true;
 };
