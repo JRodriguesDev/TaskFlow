@@ -1,8 +1,9 @@
-import { RiAddLine, RiCalendarLine, RiFlagLine, RiSearchLine, RiTaskLine } from 'react-icons/ri';
+import { RiCalendarLine, RiFlagLine, RiSearchLine, RiTaskLine } from 'react-icons/ri';
 
 import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
+import { CreateTaskDialog } from './_components/createTaskDialog';
 
 import {
   DropdownMenu,
@@ -35,10 +36,7 @@ const Page = () => {
               <Input placeholder="Pesquisar tarefas..." className="pl-9" />
             </div>
 
-            <Button className="cursor-pointer">
-              <RiAddLine className="mr-2 size-4" />
-              Nova tarefa
-            </Button>
+            <CreateTaskDialog />
           </div>
 
           {/* Filtros */}
@@ -114,10 +112,7 @@ const Page = () => {
                     </p>
                   </div>
 
-                  <Button className="cursor-pointer">
-                    <RiAddLine className="mr-2 size-4" />
-                    Nova tarefa
-                  </Button>
+                  <CreateTaskDialog />
                 </div>
               </div>
             </div>
