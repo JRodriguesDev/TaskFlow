@@ -12,6 +12,7 @@ import { FadeIn } from '@/app/_components/motions';
 import { AnimatePresence } from 'motion/react';
 import { signIn } from 'next-auth/react';
 import { formUserState } from '@/states/formState';
+import { Spinner } from '@/components/ui/spinner';
 
 const Page = () => {
   const [state, formAction, pending] = useActionState(LoginAction, formUserState);
@@ -58,7 +59,7 @@ const Page = () => {
               form="formLogin"
               type="submit"
             >
-              {pending ? 'Entrando...' : 'Entrar'}
+              {pending ? <Spinner /> : 'Entrar'}
             </Button>
 
             {/* DIVIDER */}

@@ -12,6 +12,7 @@ import { useActionState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { signIn } from 'next-auth/react';
 import { formUserState } from '@/states/formState';
+import { Spinner } from '@/components/ui/spinner';
 
 const Page = () => {
   const [state, formAction, pending] = useActionState(registerAction, formUserState);
@@ -74,7 +75,7 @@ const Page = () => {
 
             {/* REGISTER BUTTON */}
             <Button className="w-full cursor-pointer" form="registerForm" disabled={pending}>
-              Criar conta
+              {pending ? <Spinner /> : 'Criar conta'}
             </Button>
 
             {/* DIVIDER */}
