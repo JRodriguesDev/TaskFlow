@@ -4,7 +4,7 @@ import { useActionState } from 'react';
 import { updateProfileAction } from '../actions';
 import { Input } from '@/components/ui/input';
 import { Button } from '@/components/ui/button';
-import { formState } from '@/states/formState';
+import { formUserState } from '@/states/formState';
 import { Spinner } from '@/components/ui/spinner';
 import { Field, FieldLabel, FieldDescription } from '@/components/ui/field';
 import { AnimatePresence } from 'motion/react';
@@ -14,7 +14,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
 export const ProfileForm = ({ name, email }: { name: string; email: string }) => {
-  const [state, formAction, pending] = useActionState(updateProfileAction, formState);
+  const [state, formAction, pending] = useActionState(updateProfileAction, formUserState);
   const { update } = useSession();
   const router = useRouter();
 

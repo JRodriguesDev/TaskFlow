@@ -1,6 +1,6 @@
 'use server';
 
-import type { FormState } from '@/types/form';
+import type { FormUserType } from '@/types/form';
 import { profileNameSchema } from '@/lib/validations/settings';
 import { auth } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
@@ -8,9 +8,9 @@ import { updateUser } from '@/services/DAL/user';
 import { prismaErrors } from '@/lib/prisma/error';
 
 export const updateProfileAction = async (
-  _prevState: FormState,
+  _prevState: FormUserType,
   form: FormData
-): Promise<FormState> => {
+): Promise<FormUserType> => {
   const session = await auth();
 
   if (!session?.user?.id) redirect('/auth/login');

@@ -11,10 +11,10 @@ import { FcGoogle } from 'react-icons/fc';
 import { useActionState } from 'react';
 import { AnimatePresence } from 'motion/react';
 import { signIn } from 'next-auth/react';
-import { formState } from '@/states/formState';
+import { formUserState } from '@/states/formState';
 
 const Page = () => {
-  const [state, formAction, pending] = useActionState(registerAction, formState);
+  const [state, formAction, pending] = useActionState(registerAction, formUserState);
 
   return (
     <div className="flex justify-center px-4 w-1/4">

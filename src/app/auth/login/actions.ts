@@ -1,13 +1,16 @@
 'use server';
 
-import type { FormState } from '@/types/form';
+import type { FormUserType } from '@/types/form';
 import { loginSchema } from '@/lib/validations/auth';
 import { signIn } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
 import { authErrors } from '@/lib/authjs/error';
 import { prismaErrors } from '@/lib/prisma/error';
 
-export const LoginAction = async (_prevState: FormState, form: FormData): Promise<FormState> => {
+export const LoginAction = async (
+  _prevState: FormUserType,
+  form: FormData
+): Promise<FormUserType> => {
   const validationFields = loginSchema.safeParse({
     email: form.get('email'),
     password: form.get('password'),

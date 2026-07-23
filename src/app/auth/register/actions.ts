@@ -1,6 +1,6 @@
 'use server';
 
-import { FormState } from '@/types/form';
+import { FormUserType } from '@/types/form';
 import { registerSchema } from '@/lib/validations/auth';
 import { registerUser } from '@/services/DAL/auth';
 import { hashPassword } from '@/lib/crypto/password';
@@ -9,7 +9,10 @@ import { redirect } from 'next/navigation';
 import { authErrors } from '@/lib/authjs/error';
 import { prismaErrors } from '@/lib/prisma/error';
 
-export const registerAction = async (_prevState: FormState, form: FormData): Promise<FormState> => {
+export const registerAction = async (
+  _prevState: FormUserType,
+  form: FormData
+): Promise<FormUserType> => {
   const validationFields = registerSchema.safeParse({
     name: form.get('name'),
     email: form.get('email'),

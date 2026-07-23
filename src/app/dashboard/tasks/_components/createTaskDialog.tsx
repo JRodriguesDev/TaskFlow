@@ -1,6 +1,8 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useActionState } from 'react';
+import { createTaskAction } from '../actions';
+import { formTaskState } from '@/states/formState';
 
 import {
   Dialog,
@@ -25,6 +27,10 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Spinner } from '@/components/ui/spinner';
+
+import { AnimatePresence } from 'motion/react';
+import { FormError } from '@/app/_components/motions';
 
 import { Label } from '@/components/ui/label';
 
@@ -32,6 +38,9 @@ import { RiAddLine } from 'react-icons/ri';
 
 export const CreateTaskDialog = () => {
   const [open, setOpen] = useState(false);
+  const [priority, setPriority] = useState('LOW');
+  const [status, setStatus] = useState('TODO');
+  const [state, formAction, pending] = useActionState(createTaskAction, formTaskState);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -49,24 +58,35 @@ export const CreateTaskDialog = () => {
           <DialogDescription>Adicione uma nova tarefa à sua lista.</DialogDescription>
         </DialogHeader>
 
-        <form className="space-y-5">
+        <form action={formAction} className="space-y-5">
           <div className="space-y-2">
             <Label>Título</Label>
 
-            <Input placeholder="Ex.: Finalizar relatório" />
+            <Input placeholder="Ex.: Finalizar relatório" name="title" disabled={pending} />
+            <AnimatePresence>
+              {state.errors?.title && <FormError>{state.errors!.title}</FormError>}
+            </AnimatePresence>
           </div>
 
           <div className="space-y-2">
             <Label>Descrição</Label>
 
-            <Textarea rows={4} placeholder="Descreva a tarefa..." />
+            <Textarea
+              rows={4}
+              name="description"
+              placeholder="Descreva a tarefa..."
+              disabled={pending}
+            />
+            <AnimatePresence>
+              {state.errors?.description && <FormError>{state.errors!.description}</FormError>}
+            </AnimatePresence>
           </div>
 
           <div className="grid grid-cols-2 gap-4">
             <div className="space-y-2">
               <Label>Prioridade</Label>
 
-              <Select>
+              <Select disabled={pending} value={priority} onValueChange={setPriority}>
                 <SelectTrigger className="cursor-pointer">
                   <SelectValue placeholder="Selecione" />
                 </SelectTrigger>
@@ -85,12 +105,13 @@ export const CreateTaskDialog = () => {
                   </SelectItem>
                 </SelectContent>
               </Select>
+              <input type="hidden" name="priority" value={priority} />
             </div>
 
             <div className="space-y-2">
               <Label>Status</Label>
 
-              <Select defaultValue="TODO">
+              <Select onValueChange={setStatus} value={status} disabled={pending}>
                 <SelectTrigger className="cursor-pointer">
                   <SelectValue />
                 </SelectTrigger>
@@ -109,14 +130,26 @@ export const CreateTaskDialog = () => {
                   </SelectItem>
                 </SelectContent>
               </Select>
+              <input type="hidden" name="status" value={status} />
             </div>
           </div>
 
           <div className="space-y-2">
             <Label>Prazo</Label>
 
-            <Input type="datetime-local" className="cursor-text" />
+            <Input
+              type="datetime-local"
+              name="dueDate"
+              className="cursor-text"
+              disabled={pending}
+            />
+            <AnimatePresence>
+              {state.errors?.dueDate && <FormError>{state.errors!.dueDate}</FormError>}
+            </AnimatePresence>
           </div>
+          <AnimatePresence>
+            {state.message && <FormError>{state.message}</FormError>}
+          </AnimatePresence>
 
           <DialogFooter>
             <Button
@@ -128,8 +161,8 @@ export const CreateTaskDialog = () => {
               Cancelar
             </Button>
 
-            <Button className="cursor-pointer" type="submit">
-              Criar tarefa
+            <Button className="cursor-pointer" type="submit" disabled={pending}>
+              {pending ? <Spinner /> : 'Criar tarefa'}
             </Button>
           </DialogFooter>
         </form>

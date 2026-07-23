@@ -7,14 +7,14 @@ import { Button } from '@/components/ui/button';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import { useActionState } from 'react';
 import { updatePassword } from '../actions';
-import { formState } from '@/states/formState';
+import { formUserState } from '@/states/formState';
 import { AnimatePresence } from 'motion/react';
 import { FormError } from '@/app/_components/motions';
 import { toast } from 'sonner';
 import { useEffect } from 'react';
 
 export const PasswordUpdateForm = ({ hasPassword }: { hasPassword: boolean }) => {
-  const [state, formAction, pending] = useActionState(updatePassword, formState);
+  const [state, formAction, pending] = useActionState(updatePassword, formUserState);
   useEffect(() => {
     if (state.success) toast.success('Senha Alterada');
   }, [state.success]);

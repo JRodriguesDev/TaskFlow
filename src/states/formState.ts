@@ -1,6 +1,14 @@
-import type { FormState } from '@/types/form';
+import type { FormUserType, FormTaskType } from '@/types/form';
 
-export const formState: FormState = {
+export const formUserState: FormUserType = {
   success: false,
-  error: null,
+};
+
+export const formTaskState: FormTaskType = {
+  success: false,
+  errors: {
+    title: null,
+    description: null,
+    dueDate: null,
+  },
 };
