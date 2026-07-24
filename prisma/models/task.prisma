@@ -1,7 +1,7 @@
 model Task {
   id String @id @default(cuid())
   calendarEventId String?
-  name String
+  title String
   description String?
   dueDate DateTime?
   completedAt DateTime?

@@ -2,11 +2,19 @@
 
 import type { FormTaskType } from '@/types/form';
 import { taskCreateSchema } from '@/lib/validations/task';
+import { prismaErrors } from '@/lib/prisma/error';
+import { createTask } from '@/services/DAL/task';
+import { auth } from '@/lib/authjs/authjs';
+import { redirect } from 'next/navigation';
 
 export const createTaskAction = async (
   _prevState: FormTaskType,
   data: FormData
 ): Promise<FormTaskType> => {
+  const session = await auth();
+  if (!session?.user?.id) redirect('/auth/login');
+  const userId = session.user.id;
+
   const validationFields = taskCreateSchema.safeParse({
     title: data.get('title'),
     description: data.get('description'),
@@ -26,6 +34,10 @@ export const createTaskAction = async (
     };
   }
   const task = validationFields.data;
-  console.log(task);
-  return { success: false };
+  try {
+    await createTask(userId, task);
+  } catch (error) {
+    return { success: false, message: prismaErrors(error) ?? 'Error inteno' };
+  }
+  return { success: true, message: task.title };
 };

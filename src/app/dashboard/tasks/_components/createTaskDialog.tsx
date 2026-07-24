@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useActionState } from 'react';
+import { useState, useActionState, useEffect } from 'react';
 import { createTaskAction } from '../actions';
 import { formTaskState } from '@/states/formState';
 
@@ -13,13 +13,9 @@ import {
   DialogDescription,
   DialogFooter,
 } from '@/components/ui/dialog';
-
 import { Button } from '@/components/ui/button';
-
 import { Input } from '@/components/ui/input';
-
 import { Textarea } from '@/components/ui/textarea';
-
 import {
   Select,
   SelectContent,
@@ -28,12 +24,10 @@ import {
   SelectValue,
 } from '@/components/ui/select';
 import { Spinner } from '@/components/ui/spinner';
-
+import { toast } from 'sonner';
 import { AnimatePresence } from 'motion/react';
 import { FormError } from '@/app/_components/motions';
-
 import { Label } from '@/components/ui/label';
-
 import { RiAddLine } from 'react-icons/ri';
 
 export const CreateTaskDialog = () => {
@@ -41,6 +35,13 @@ export const CreateTaskDialog = () => {
   const [priority, setPriority] = useState('LOW');
   const [status, setStatus] = useState('TODO');
   const [state, formAction, pending] = useActionState(createTaskAction, formTaskState);
+
+  useEffect(() => {
+    if (state.success) {
+      toast.success(`Tarefa ${state.message} criada`);
+      setOpen(false);
+    }
+  }, [state.success]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -148,7 +149,7 @@ export const CreateTaskDialog = () => {
             </AnimatePresence>
           </div>
           <AnimatePresence>
-            {state.message && <FormError>{state.message}</FormError>}
+            {!state.success && <FormError>{state.message}</FormError>}
           </AnimatePresence>
 
           <DialogFooter>
