@@ -86,11 +86,10 @@ export const taskUpdateAction = async (
   return { success: true, message: task.title };
 };
 
-export const listTasksAction = async (filters: TaskSearchParams): Promise<TaskResponse> => {
-  const session = await auth();
-  if (!session?.user?.id) redirect('/auth/login');
-  const userId = session.user.id;
-
+export const listTasksAction = async (
+  userId: string,
+  filters: TaskSearchParams
+): Promise<TaskResponse> => {
   const taskFilers: TaskSearchParams = {
     search: filters.search?.trim() || undefined,
     status: filters.status || undefined,

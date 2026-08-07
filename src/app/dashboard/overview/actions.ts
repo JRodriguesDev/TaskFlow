@@ -1,7 +1,5 @@
 'use server';
 
-import { auth } from '@/lib/authjs/authjs';
-import { redirect } from 'next/navigation';
 import {
   getTodayProgress,
   getTaskSummary,
@@ -13,11 +11,7 @@ import { prismaErrors } from '@/lib/prisma/error';
 import type { TaskSearchParams, TaskResponse } from '@/types/tasks';
 import { updateTag } from 'next/cache';
 
-export const todayProgressAction = async (): Promise<TodayTaskReponse> => {
-  const session = await auth();
-  if (!session?.user?.id) redirect('/auth/login');
-  const userId = session.user.id;
-
+export const todayProgressAction = async (userId: string): Promise<TodayTaskReponse> => {
   try {
     const todayTasks = await getTodayProgress(userId);
     const total = todayTasks.length;
@@ -39,11 +33,7 @@ export const todayProgressAction = async (): Promise<TodayTaskReponse> => {
   }
 };
 
-export const taskSummaryAction = async (): Promise<SummaryTaskResponse> => {
-  const session = await auth();
-  if (!session?.user?.id) redirect('/auth/login');
-  const userId = session.user.id;
-
+export const taskSummaryAction = async (userId: string): Promise<SummaryTaskResponse> => {
   try {
     const tasks = await getTaskSummary(userId);
     return {
@@ -60,11 +50,7 @@ export const taskSummaryAction = async (): Promise<SummaryTaskResponse> => {
   }
 };
 
-export const taskScheduleAction = async (): Promise<taskScheduleResponse> => {
-  const session = await auth();
-  if (!session?.user?.id) redirect('/auth/login');
-  const userId = session.user.id;
-
+export const taskScheduleAction = async (userId: string): Promise<taskScheduleResponse> => {
   try {
     const tasks = await getTaskSchedule(userId);
     return {

@@ -83,6 +83,8 @@ export const deleteTask = async (id: string) => {
 };
 
 export const getTodayProgress = async (userId: string) => {
+  'use cache';
+  cacheTag(`tasksUser:${userId}`);
   const today = new Date();
   today.setHours(0, 0, 0, 0);
   const tomorrow = new Date(today);
@@ -106,6 +108,8 @@ export const getTodayProgress = async (userId: string) => {
 };
 
 export const getTaskSummary = async (userId: string) => {
+  'use cache';
+  cacheTag(`tasksUser:${userId}`);
   const tasks = await prisma.task.findMany({
     where: { userId: userId },
     select: {
@@ -121,6 +125,8 @@ export const getTaskSummary = async (userId: string) => {
 };
 
 export const getTaskSchedule = async (userId: string) => {
+  'use cache';
+  cacheTag(`tasksUser:${userId}`);
   const todayStart = new Date();
   todayStart.setHours(0, 0, 0, 0);
 

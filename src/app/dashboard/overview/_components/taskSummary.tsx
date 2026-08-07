@@ -2,8 +2,8 @@ import { Status } from './status';
 import { taskSummaryAction } from '../actions';
 import { OverviewError } from './overviewError';
 
-export const TaskSummary = async () => {
-  const data = await taskSummaryAction();
+export const TaskSummary = async ({ userId }: { userId: string }) => {
+  const data = await taskSummaryAction(userId);
 
   return (
     <div className="grid gap-4 md:grid-cols-4">

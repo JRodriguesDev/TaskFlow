@@ -9,9 +9,14 @@ import { StatusSkeleton } from './_components/statusSkeleton';
 import { Suspense } from 'react';
 import { TaskSchedule } from './_components/taskSchedule';
 import { TaskScheduleLoading } from './_components/taskScheduleLoading';
+import { auth } from '@/lib/authjs/authjs';
+import { redirect } from 'next/navigation';
 
 const Page = async () => {
-  const data = await todayProgressAction();
+  const session = await auth();
+  if (!session?.user?.id) redirect('/auth/login');
+  const userId = session.user.id;
+  const data = await todayProgressAction(userId);
 
   return (
     <main className="space-y-8 p-8">
@@ -48,11 +53,11 @@ const Page = async () => {
       </Card>
 
       <Suspense fallback={<TaskScheduleLoading />}>
-        <TaskSchedule />
+        <TaskSchedule userId={userId} />
       </Suspense>
 
       <Suspense fallback={<StatusSkeleton />}>
-        <TaskSummary />
+        <TaskSummary userId={userId} />
       </Suspense>
     </main>
   );
