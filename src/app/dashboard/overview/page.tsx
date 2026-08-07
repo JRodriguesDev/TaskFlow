@@ -8,6 +8,7 @@ import { TaskSummary } from './_components/taskSummary';
 import { StatusSkeleton } from './_components/statusSkeleton';
 import { Suspense } from 'react';
 import { TaskSchedule } from './_components/taskSchedule';
+import { TaskScheduleLoading } from './_components/taskScheduleLoading';
 
 const Page = async () => {
   const data = await todayProgressAction();
@@ -46,7 +47,9 @@ const Page = async () => {
         </CardContent>
       </Card>
 
-      <TaskSchedule />
+      <Suspense fallback={<TaskScheduleLoading />}>
+        <TaskSchedule />
+      </Suspense>
 
       <Suspense fallback={<StatusSkeleton />}>
         <TaskSummary />

@@ -6,6 +6,7 @@ import { OverviewError } from './overviewError';
 import { TaskDialog } from './taskDialog';
 
 export const TaskSchedule = async () => {
+  await new Promise((r) => setTimeout(r, 3000));
   const data = await taskScheduleAction();
 
   return (
