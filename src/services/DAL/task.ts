@@ -199,3 +199,21 @@ export const getTaskSchedule = async (userId: string) => {
     overdueTasks,
   };
 };
+
+export const getCalendarTask = async (userId: string) => {
+  'use cache';
+  cacheTag(`tasksUser:${userId}`);
+  const tasks = await prisma.task.findMany({
+    where: { userId: userId },
+    select: {
+      id: true,
+      title: true,
+      status: true,
+      priority: true,
+      calendarEventId: true,
+      dueDate: true,
+    },
+  });
+
+  return tasks;
+};

@@ -2,7 +2,7 @@ export type TaskCardProps = {
   id: string;
   title: string;
   description?: string | null;
-  dueDate?: Date | null;
+  dueDate: Date;
   priority: 'LOW' | 'MEDIUM' | 'HIGH';
   status: 'TODO' | 'IN_PROGRESS' | 'DONE';
   completedAt?: Date | null;

@@ -1,8 +1,18 @@
 import { CalendarDays } from 'lucide-react';
 import { priorityStyles } from '@/states/calendar';
 import { Calendar } from './_components/calendar';
+import { auth } from '@/lib/authjs/authjs';
+import { redirect } from 'next/navigation';
+import { getTasksAction } from './actions';
+import { CalendarError } from './_components/calendarError';
 
-const Page = () => {
+const Page = async () => {
+  const session = await auth();
+  if (!session?.user?.id) redirect('/auth/login');
+  const userId = session.user.id;
+  const data = await getTasksAction(userId);
+  const tasks = data?.tasks ?? [];
+
   return (
     <div className="mx-auto w-full max-w-6xl space-y-6 p-6">
       {/* Header */}
@@ -20,7 +30,15 @@ const Page = () => {
       </div>
 
       {/* Calendar */}
-      <Calendar />
+      {data.success ? (
+        <>
+          <Calendar tasks={tasks} />
+        </>
+      ) : (
+        <>
+          <CalendarError message={data.message} />
+        </>
+      )}
 
       {/* Legend */}
       <div className="flex flex-wrap items-center gap-5 text-xs text-muted-foreground">

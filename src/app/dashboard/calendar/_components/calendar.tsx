@@ -13,31 +13,30 @@ import { RiFlag2Line } from 'react-icons/ri';
 import { priorityStyles, statusStyles } from '@/states/calendar';
 import { CalendarTask } from '@/types/calendar';
 
-const tasks = [];
-
-export const Calendar = () => {
-  const [currentMonth, setCurrentMonth] = useState(new Date(2026, 7, 1));
-
+export const Calendar = ({ tasks }: { tasks: CalendarTask[] }) => {
+  const now = new Date();
+  const [currentMonth, setCurrentMonth] = useState(new Date(now.getFullYear(), now.getMonth(), 1));
   const calendarDays = useMemo(() => getCalendarDays(currentMonth), [currentMonth]);
 
   const tasksByDate = useMemo(() => {
     const grouped = new Map<string, CalendarTask[]>();
 
     for (const task of tasks) {
-      const existing = grouped.get(task.dueDate) ?? [];
+      const dateKey = getDateKey(task.dueDate);
+      const existing = grouped.get(dateKey) ?? [];
 
-      grouped.set(task.dueDate, [...existing, task]);
+      grouped.set(dateKey, [...existing, task]);
     }
 
     return grouped;
-  }, []);
+  }, [tasks]);
 
   const goToPreviousMonth = () => {
     setCurrentMonth((current) => new Date(current.getFullYear(), current.getMonth() - 1, 1));
   };
 
   const goToToday = () => {
-    setCurrentMonth(new Date());
+    setCurrentMonth(new Date(now.getFullYear(), now.getMonth(), 1));
   };
 
   const goToNextMonth = () => {

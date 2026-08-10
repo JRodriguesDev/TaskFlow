@@ -10,7 +10,10 @@ export const taskSchema = z.object({
     .transform((value) => value || null),
   priority: z.enum(['LOW', 'MEDIUM', 'HIGH']),
   status: z.enum(['TODO', 'IN_PROGRESS', 'DONE']),
-  dueDate: z.string().transform((date) => (date ? new Date(date) : null)),
+  dueDate: z
+    .string()
+    .min(1, 'Requer Data')
+    .transform((date) => new Date(date)),
 });
 
 export type TaskSchema = z.infer<typeof taskSchema>;
