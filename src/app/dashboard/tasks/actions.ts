@@ -14,6 +14,8 @@ import { auth } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
 import type { TaskSearchParams, TaskResponse } from '@/types/tasks';
 import { updateTag } from 'next/cache';
+import { createEvent, deleteEvent, editEvent } from '@/services/calendar/calendar';
+import { updateTaskHelper } from '@/lib/helpers/calendarApi';
 
 export const createTaskAction = async (
   _prevState: FormTaskType,
@@ -29,6 +31,7 @@ export const createTaskAction = async (
     priority: data.get('priority'),
     status: data.get('status'),
     dueDate: data.get('dueDate'),
+    syncCalendar: data.get('syncCalendar'),
   });
   if (!validationFields.success) {
     const errors = validationFields.error.flatten().fieldErrors;
@@ -41,14 +44,21 @@ export const createTaskAction = async (
       },
     };
   }
-  const task = validationFields.data;
+  const { syncCalendar, ...task } = validationFields.data;
   try {
-    const taskUserId = await createTask(userId, task);
+    const eventId = syncCalendar
+      ? await createEvent({
+          title: task.title,
+          description: task.description,
+          dueDate: task.dueDate,
+          priority: task.priority,
+        })
+      : undefined;
+    const taskUserId = await createTask(userId, task, eventId);
     updateTag(`tasksUser:${taskUserId}`);
   } catch (error) {
     return { success: false, message: prismaErrors(error) ?? 'Error inteno' };
   }
-
   return { success: true, message: task.title };
 };
 
@@ -63,8 +73,8 @@ export const taskUpdateAction = async (
     priority: data.get('priority'),
     status: data.get('status'),
     dueDate: data.get('dueDate'),
+    syncCalendar: data.get('syncCalendar'),
   });
-
   if (!validationFields.success) {
     const errors = validationFields.error.flatten().fieldErrors;
     return {
@@ -76,9 +86,29 @@ export const taskUpdateAction = async (
       },
     };
   }
-  const { id: taskId, ...task } = validationFields.data;
+  const { id: taskId, syncCalendar, ...task } = validationFields.data;
   try {
-    const taskUserId = await updateTask(taskId!, task);
+    const helper = await updateTaskHelper(taskId!, syncCalendar);
+    const eventId =
+      helper.action === 'CREATE'
+        ? await createEvent({
+            title: task.title,
+            description: task.description,
+            dueDate: task.dueDate,
+            priority: task.priority,
+          })
+        : helper.action === 'EDIT'
+          ? await editEvent({
+              eventId: helper.calendarId,
+              title: task.title,
+              description: task.description,
+              dueDate: task.dueDate,
+              priority: task.priority,
+            })
+          : helper.action === 'DELETE'
+            ? await deleteEvent(helper.calendarId!)
+            : undefined;
+    const taskUserId = await updateTask(taskId!, task, eventId ?? undefined);
     updateTag(`tasksUser:${taskUserId}`);
   } catch (error) {
     return { success: false, message: prismaErrors(error) ?? 'Error inteno' };

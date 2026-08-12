@@ -9,22 +9,32 @@ import { cacheTag } from 'next/cache';
 
 type TaskCardStatus = TaskCardProps['status'];
 
-export const createTask = async (userId: string, data: TaskSchema) => {
+export const createTask = async (
+  userId: string,
+  data: Omit<TaskSchema, 'syncCalendar'>,
+  eventId: string | undefined
+) => {
   const task = await prisma.task.create({
     data: {
       userId: userId,
       ...data,
+      calendarEventId: eventId,
     },
     select: { userId: true },
   });
   return task.userId;
 };
 
-export const updateTask = async (taskId: string, data: TaskSchema) => {
+export const updateTask = async (
+  taskId: string,
+  data: Omit<TaskSchema, 'syncCalendar'>,
+  eventId: string | undefined
+) => {
   const task = await prisma.task.update({
     where: { id: taskId },
     data: {
       ...data,
+      calendarEventId: eventId,
     },
     select: { userId: true },
   });
@@ -59,6 +69,7 @@ export const getTasks = async (userId: string, filters: TaskSearchParams) => {
       dueDate: true,
       createdAt: true,
       completedAt: true,
+      calendarEventId: true,
     },
   });
 
@@ -216,4 +227,15 @@ export const getCalendarTask = async (userId: string) => {
   });
 
   return tasks;
+};
+
+export const getExistingTask = async (taskId: string) => {
+  const task = await prisma.task.findUnique({
+    where: { id: taskId },
+    select: {
+      calendarEventId: true,
+    },
+  });
+
+  return task?.calendarEventId;
 };

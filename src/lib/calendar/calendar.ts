@@ -2,7 +2,7 @@
 import { auth } from '../authjs/authjs';
 import { google } from 'googleapis';
 
-const googleCalendar = async () => {
+export const googleCalendar = async () => {
   const session = await auth();
 
   if (!session?.accessToken) throw new Error('Usuário não autenticado ou token de acesso ausente.');

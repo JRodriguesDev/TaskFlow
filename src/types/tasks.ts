@@ -3,6 +3,7 @@ export type TaskCardProps = {
   title: string;
   description?: string | null;
   dueDate: Date;
+  calendarEventId?: string;
   priority: 'LOW' | 'MEDIUM' | 'HIGH';
   status: 'TODO' | 'IN_PROGRESS' | 'DONE';
   completedAt?: Date | null;
@@ -11,7 +12,7 @@ export type TaskCardProps = {
 
 export type TaskDialogProps = Pick<
   TaskCardProps,
-  'id' | 'title' | 'description' | 'status' | 'priority' | 'dueDate'
+  'id' | 'title' | 'description' | 'status' | 'priority' | 'dueDate' | 'calendarEventId'
 >;
 
 export type TaskSchedule = Pick<

@@ -10,3 +10,16 @@ export type CalendarTaskResponse = {
   tasks?: CalendarTask[];
   message?: string;
 };
+
+export type CalendarTaskApi = {
+  eventId?: string;
+  title: string;
+  description: string | null;
+  dueDate: Date;
+  priority: CalendarTask['priority'];
+};
+
+export type HelperReturn = {
+  action: 'CREATE' | 'EDIT' | 'DELETE' | 'NONE';
+  calendarId?: string;
+};

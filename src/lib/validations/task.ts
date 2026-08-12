@@ -14,6 +14,7 @@ export const taskSchema = z.object({
     .string()
     .min(1, 'Requer Data')
     .transform((date) => new Date(date)),
+  syncCalendar: z.enum(['true', 'false']).transform((value) => value === 'true'),
 });
 
 export type TaskSchema = z.infer<typeof taskSchema>;

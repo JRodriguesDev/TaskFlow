@@ -23,6 +23,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select';
+import { Switch } from '@/components/ui/switch';
 import { Spinner } from '@/components/ui/spinner';
 import { toast } from 'sonner';
 import { AnimatePresence } from 'motion/react';
@@ -62,17 +63,19 @@ export const TaskDialog = ({
   const [open, setOpen] = useState(false);
   const [priority, setPriority] = useState(task?.priority ?? 'LOW');
   const [status, setStatus] = useState(task?.status ?? 'TODO');
+  const [syncCalendar, setSyncCalendar] = useState(!!task?.calendarEventId);
   const [state, formAction, pending] = useActionState(taskAction, formTaskState);
-
   const dueDate = defaultDueDate(task?.dueDate);
 
   useEffect(() => {
     if (state.success) {
       toast.success('Sucesso');
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setOpen(false);
       router.refresh();
     }
   }, [state]);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>{trigger}</DialogTrigger>
@@ -188,6 +191,26 @@ export const TaskDialog = ({
               {state.errors?.dueDate && <FormError>{state.errors!.dueDate}</FormError>}
             </AnimatePresence>
           </div>
+
+          <div className="flex items-center justify-between rounded-lg border p-3">
+            <div className="space-y-0.5">
+              <Label htmlFor="syncCalendar">Adicionar ao Google Calendar</Label>
+
+              <p className="text-xs text-muted-foreground">
+                Sincronizar esta tarefa com seu calendário.
+              </p>
+            </div>
+
+            <Switch
+              id="syncCalendar"
+              disabled={pending}
+              checked={syncCalendar}
+              onCheckedChange={setSyncCalendar}
+              defaultChecked={!!task?.calendarEventId}
+            />
+            <input type="hidden" name="syncCalendar" value={syncCalendar ? 'true' : 'false'} />
+          </div>
+
           <AnimatePresence>
             {!state.success && <FormError>{state.message}</FormError>}
           </AnimatePresence>
