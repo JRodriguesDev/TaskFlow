@@ -23,6 +23,7 @@ export const registerAction = async (
     return { message: validationFields.error.issues[0].message };
   }
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const { confirmPassword, password, ...rest } = validationFields.data;
   const hashedPassword = await hashPassword(password);
   const createUserData = {

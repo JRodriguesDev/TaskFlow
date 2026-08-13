@@ -23,7 +23,7 @@ import {
 
 import { useOptimistic, startTransition } from 'react';
 import { statusChangeAction, deleteTaskAction } from '../actions';
-import type { TaskCardProps, TaskDialogProps } from '@/types/tasks';
+import type { TaskDialogProps } from '@/types/tasks';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
 import { TaskDialog } from './taskDialog';
@@ -50,23 +50,21 @@ const statusBadge = {
   ),
 };
 
-type TaskCardStatus = TaskCardProps['status'];
-
 export const TaskMenu = ({
   id,
   status,
   task,
 }: {
   id: string;
-  status: TaskCardStatus;
+  status: TaskDialogProps['status'];
   task: TaskDialogProps;
 }) => {
   const router = useRouter();
   const [statusOpmistic, setStatusOptmistic] = useOptimistic(
     status,
-    (oldState, newState: TaskCardStatus) => newState
+    (oldState, newState: TaskDialogProps['status']) => newState
   );
-  const handleStatusChange = async (newStatus: TaskCardStatus) => {
+  const handleStatusChange = async (newStatus: TaskDialogProps['status']) => {
     startTransition(() => {
       setStatusOptmistic(newStatus);
     });

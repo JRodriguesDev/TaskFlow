@@ -1,7 +1,7 @@
 'use server';
 
 import { getCalendarTask } from '@/services/DAL/task';
-import { CalendarTaskResponse } from '@/types/calendar';
+import { CalendarTaskResponse } from '@/types/actionResponse';
 import { prismaErrors } from '@/lib/prisma/error';
 
 export const getTasksAction = async (userId: string): Promise<CalendarTaskResponse> => {

@@ -28,27 +28,9 @@ const priorityStyles = {
   },
 };
 
-export const TaskCard = ({
-  id,
-  title,
-  description,
-  dueDate,
-  priority,
-  status,
-  createdAt,
-  completedAt,
-  calendarEventId,
-}: TaskCardProps) => {
-  const priorityStyle = priorityStyles[priority];
-  const task = {
-    id: id,
-    title: title,
-    description: description,
-    dueDate: dueDate,
-    priority: priority,
-    status: status,
-    calendarEventId: calendarEventId,
-  };
+export const TaskCard = ({ task }: { task: TaskCardProps }) => {
+  const priorityStyle = priorityStyles[task.priority];
+
   return (
     <Card
       className="
@@ -88,17 +70,17 @@ export const TaskCard = ({
         {/* Header */}
         <div className="flex items-start gap-4">
           <div className="flex-1 space-y-2">
-            <h3 className="text-lg font-semibold tracking-tight">{title}</h3>
+            <h3 className="text-lg font-semibold tracking-tight">{task.title}</h3>
 
-            {description && (
+            {task.description && (
               <p className="line-clamp-3 text-sm leading-relaxed text-muted-foreground">
-                {description}
+                {task.description}
               </p>
             )}
           </div>
 
           {/* Status + Menu */}
-          <TaskMenu id={id} status={status} task={task} />
+          <TaskMenu id={task.id} status={task.status} task={task} />
         </div>
 
         {/* Footer */}
@@ -109,25 +91,25 @@ export const TaskCard = ({
           </Badge>
 
           <div className="space-y-1 text-right text-xs text-muted-foreground">
-            {dueDate && (
+            {task.dueDate && (
               <div className="flex items-center justify-end gap-1">
                 <RiCalendarLine className="size-3.5" />
-                <span>{dueDate.toLocaleDateString('pt-BR')}</span>
+                <span>{task.dueDate.toLocaleDateString('pt-BR')}</span>
               </div>
             )}
 
             <div>
               Criada:
               <span className="ml-1 font-medium text-foreground">
-                {createdAt.toLocaleDateString('pt-BR')}
+                {task.createdAt.toLocaleDateString('pt-BR')}
               </span>
             </div>
 
-            {completedAt && (
+            {task.completedAt && (
               <div>
                 Concluída:
                 <span className="ml-1 font-medium text-emerald-500">
-                  {completedAt.toLocaleDateString('pt-BR')}
+                  {task.completedAt.toLocaleDateString('pt-BR')}
                 </span>
               </div>
             )}

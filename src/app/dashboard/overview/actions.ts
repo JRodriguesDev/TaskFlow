@@ -6,9 +6,14 @@ import {
   getTaskSchedule,
   updateTaskStatus,
 } from '@/services/DAL/task';
-import type { TodayTaskReponse, SummaryTaskResponse, taskScheduleResponse } from '@/types/tasks';
+import type {
+  TodayTaskReponse,
+  SummaryTaskResponse,
+  taskScheduleResponse,
+  TaskListResponse,
+} from '@/types/actionResponse';
 import { prismaErrors } from '@/lib/prisma/error';
-import type { TaskSearchParams, TaskResponse } from '@/types/tasks';
+import type { TaskSearchParams } from '@/types/tasks';
 import { updateTag } from 'next/cache';
 
 export const todayProgressAction = async (userId: string): Promise<TodayTaskReponse> => {
@@ -70,7 +75,7 @@ export const taskScheduleAction = async (userId: string): Promise<taskScheduleRe
 export const statusChangeAction = async (
   taskId: string,
   newStatus: TaskSearchParams['status']
-): Promise<TaskResponse> => {
+): Promise<TaskListResponse> => {
   try {
     const taskUserId = await updateTaskStatus(taskId, newStatus!);
     updateTag(`tasksUser:${taskUserId}`);

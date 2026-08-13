@@ -4,8 +4,6 @@ import { RiCheckboxCircleLine, RiLoader4Line, RiTimeLine } from 'react-icons/ri'
 
 import type { TaskSchedule } from '@/types/tasks';
 
-type TaskScheduleStatus = Pick<TaskSchedule, 'priority' | 'status'>;
-
 export const Task = ({
   title,
   status,
@@ -13,8 +11,8 @@ export const Task = ({
   priority,
 }: {
   title: string;
-  status: TaskScheduleStatus['status'];
-  priority: TaskScheduleStatus['priority'];
+  status: TaskSchedule['status'];
+  priority: TaskSchedule['priority'];
   overDue?: boolean;
 }) => {
   const priorityBorder = {

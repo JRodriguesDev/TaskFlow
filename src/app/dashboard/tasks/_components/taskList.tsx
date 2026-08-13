@@ -18,18 +18,7 @@ export const TaskList = async ({ params }: { params: TaskSearchParams }) => {
   return (
     <div className="space-y-4 p-6">
       {tasks.map((el, i) => (
-        <TaskCard
-          key={i}
-          id={el.id}
-          title={el.title}
-          description={el.description}
-          priority={el.priority}
-          status={el.status}
-          dueDate={el.dueDate}
-          createdAt={el.createdAt}
-          completedAt={el.completedAt}
-          calendarEventId={el.calendarEventId}
-        />
+        <TaskCard key={i} task={el} />
       ))}
     </div>
   );

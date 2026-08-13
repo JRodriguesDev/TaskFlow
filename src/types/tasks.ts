@@ -1,65 +1,35 @@
-export type TaskCardProps = {
-  id: string;
-  title: string;
-  description?: string | null;
-  dueDate: Date;
-  calendarEventId?: string;
-  priority: 'LOW' | 'MEDIUM' | 'HIGH';
-  status: 'TODO' | 'IN_PROGRESS' | 'DONE';
-  completedAt?: Date | null;
-  createdAt: Date;
+import type { Task } from '@/generated/prisma/client';
+
+export type TaskCardProps = Pick<
+  Task,
+  | 'id'
+  | 'title'
+  | 'description'
+  | 'dueDate'
+  | 'calendarEventId'
+  | 'priority'
+  | 'status'
+  | 'completedAt'
+  | 'createdAt'
+> & {
+  description?: Task['description'];
+  calendarEventId?: Task['calendarEventId'];
+  completedAt?: Task['completedAt'];
 };
 
 export type TaskDialogProps = Pick<
-  TaskCardProps,
+  Task,
   'id' | 'title' | 'description' | 'status' | 'priority' | 'dueDate' | 'calendarEventId'
 >;
 
 export type TaskSchedule = Pick<
   TaskCardProps,
-  'id' | 'title' | 'description' | 'status' | 'priority'
+  'id' | 'title' | 'description' | 'status' | 'priority' | 'dueDate'
 >;
 
-export type TaskSearchParams = {
+export type dueDateType = 'today' | 'tomorrow' | '3' | '7' | '30' | 'overdue' | 'none';
+
+export type TaskSearchParams = Partial<Pick<Task, 'status' | 'priority'>> & {
+  dueDate?: dueDateType;
   search?: string;
-  status?: 'TODO' | 'IN_PROGRESS' | 'DONE';
-  priority?: 'LOW' | 'MEDIUM' | 'HIGH';
-  dueDate?: 'today' | 'tomorrow' | '3' | '7' | '30' | 'overdue' | 'none';
-};
-
-export type TaskResponse = {
-  success: boolean;
-  tasks?: TaskCardProps[];
-  message?: string;
-};
-
-export type TodayTaskReponse = {
-  success: boolean;
-  progress?: {
-    total: number;
-    completed: number;
-    percentage: number;
-  };
-  message?: string;
-};
-
-export type SummaryTaskResponse = {
-  success: boolean;
-  summaryTasks?: {
-    total: number;
-    done: number;
-    inProgress: number;
-    todo: number;
-  };
-  message?: string;
-};
-
-export type taskScheduleResponse = {
-  success: boolean;
-  tasks?: {
-    todayTasks: TaskSchedule[];
-    tomorrowTasks: TaskSchedule[];
-    overdueTasks: TaskSchedule[];
-  };
-  message?: string;
 };

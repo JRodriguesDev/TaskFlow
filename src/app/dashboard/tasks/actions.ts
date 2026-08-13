@@ -12,7 +12,8 @@ import {
 } from '@/services/DAL/task';
 import { auth } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
-import type { TaskSearchParams, TaskResponse } from '@/types/tasks';
+import type { TaskSearchParams } from '@/types/tasks';
+import type { TaskListResponse } from '@/types/actionResponse';
 import { updateTag } from 'next/cache';
 import { createEvent } from '@/services/calendar/calendar';
 import { syncCalendarUpdate, syncCalendarDelete } from '@/services/calendar/sync';
@@ -106,7 +107,7 @@ export const taskUpdateAction = async (
 export const listTasksAction = async (
   userId: string,
   filters: TaskSearchParams
-): Promise<TaskResponse> => {
+): Promise<TaskListResponse> => {
   const taskFilers: TaskSearchParams = {
     search: filters.search?.trim() || undefined,
     status: filters.status || undefined,
@@ -124,7 +125,7 @@ export const listTasksAction = async (
 export const statusChangeAction = async (
   taskId: string,
   newStatus: TaskSearchParams['status']
-): Promise<TaskResponse> => {
+): Promise<TaskListResponse> => {
   try {
     const taskUserId = await updateTaskStatus(taskId, newStatus!);
     updateTag(`tasksUser:${taskUserId}`);
@@ -134,7 +135,7 @@ export const statusChangeAction = async (
   }
 };
 
-export const deleteTaskAction = async (taskId: string): Promise<TaskResponse> => {
+export const deleteTaskAction = async (taskId: string): Promise<TaskListResponse> => {
   try {
     await syncCalendarDelete(taskId);
     const taskUserId = await deleteTask(taskId);

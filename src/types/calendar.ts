@@ -5,12 +5,6 @@ export type CalendarTask = Pick<
   'id' | 'title' | 'status' | 'priority' | 'calendarEventId' | 'dueDate'
 >;
 
-export type CalendarTaskResponse = {
-  success: boolean;
-  tasks?: CalendarTask[];
-  message?: string;
-};
-
 export type CalendarTaskApi = {
   eventId?: string;
   title: string;
@@ -19,7 +13,7 @@ export type CalendarTaskApi = {
   priority: CalendarTask['priority'];
 };
 
-export type HelperReturn = {
+export type HelperReturna = {
   action: 'CREATE' | 'EDIT' | 'DELETE' | 'NONE';
   calendarId?: string;
 };

@@ -65,7 +65,7 @@ export const TaskDialog = ({
   const [status, setStatus] = useState(task?.status ?? 'TODO');
   const [syncCalendar, setSyncCalendar] = useState(!!task?.calendarEventId);
   const [state, formAction, pending] = useActionState(taskAction, formTaskState);
-  const dueDate = defaultDueDate(task?.dueDate);
+  const dueDate = defaultDueDate(task?.dueDate ? task.dueDate : null);
 
   useEffect(() => {
     if (state.success) {

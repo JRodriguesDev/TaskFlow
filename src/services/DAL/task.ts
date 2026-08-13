@@ -7,12 +7,10 @@ import { buildDueDateFilter } from '@/lib/helpers/dueDate';
 import type { TaskCardProps } from '@/types/tasks';
 import { cacheTag } from 'next/cache';
 
-type TaskCardStatus = TaskCardProps['status'];
-
 export const createTask = async (
   userId: string,
   data: Omit<TaskSchema, 'syncCalendar'>,
-  eventId: string | undefined
+  eventId: string | undefined | null
 ) => {
   const task = await prisma.task.create({
     data: {
@@ -76,7 +74,7 @@ export const getTasks = async (userId: string, filters: TaskSearchParams) => {
   return tasks;
 };
 
-export const updateTaskStatus = async (id: string, status: TaskCardStatus) => {
+export const updateTaskStatus = async (id: string, status: TaskCardProps['status']) => {
   const task = await prisma.task.update({
     where: { id: id },
     data: { status: status },
@@ -166,6 +164,7 @@ export const getTaskSchedule = async (userId: string) => {
         description: true,
         status: true,
         priority: true,
+        dueDate: true,
       },
     }),
     prisma.task.findMany({
@@ -183,6 +182,7 @@ export const getTaskSchedule = async (userId: string) => {
         description: true,
         status: true,
         priority: true,
+        dueDate: true,
       },
     }),
     prisma.task.findMany({
@@ -200,6 +200,7 @@ export const getTaskSchedule = async (userId: string) => {
         description: true,
         status: true,
         priority: true,
+        dueDate: true,
       },
     }),
   ]);

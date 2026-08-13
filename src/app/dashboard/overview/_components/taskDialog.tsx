@@ -33,29 +33,29 @@ import {
 } from 'react-icons/ri';
 
 import { statusChangeAction } from '../actions';
-import type { TaskDialogProps } from '@/types/tasks';
+import type { TaskSchedule } from '@/types/tasks';
 import { Spinner } from '@/components/ui/spinner';
+import { defaultDueDate } from '@/lib/helpers/dueDate';
 
 const PRIORITY_STYLES = {
   LOW: { color: 'text-emerald-500', label: 'Baixa' },
   MEDIUM: { color: 'text-yellow-500', label: 'Média' },
   HIGH: { color: 'text-red-500', label: 'Alta' },
-} as const;
-
-type TaskCardStatus = TaskDialogProps['status'];
+};
 
 export const TaskDialog = ({
   children,
   task,
 }: {
   children: React.ReactNode;
-  task: TaskDialogProps;
+  task: TaskSchedule;
 }) => {
   const router = useRouter();
   const [pending, startTransition] = useTransition();
   const [open, setOpen] = useState(false);
+  const dueDate = defaultDueDate(task.dueDate);
 
-  const handleStatusChange = async (newStatus: TaskCardStatus) => {
+  const handleStatusChange = async (newStatus: TaskSchedule['status']) => {
     startTransition(async () => {
       const response = await statusChangeAction(task.id, newStatus);
       if (!response.success) {
@@ -121,8 +121,8 @@ export const TaskDialog = ({
               </span>
               <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                 <RiCalendarLine size={16} className="text-muted-foreground" />
-                {task.dueDate
-                  ? task.dueDate.toLocaleDateString('pt-BR', {
+                {dueDate
+                  ? new Date(dueDate).toLocaleString('pt-BR', {
                       dateStyle: 'medium',
                       timeStyle: 'short',
                     })
@@ -140,7 +140,7 @@ export const TaskDialog = ({
               <Select
                 value={task.status}
                 disabled={pending}
-                onValueChange={(value) => handleStatusChange(value as TaskDialogProps['status'])}
+                onValueChange={(value) => handleStatusChange(value as TaskSchedule['status'])}
               >
                 <SelectTrigger className="w-[220px] cursor-pointer">
                   <SelectValue placeholder="Selecione..." />

@@ -1,10 +1,8 @@
 import type { Prisma } from '@/generated/prisma/client';
-import type { TaskSearchParams } from '@/types/tasks';
 import type { TaskDialogProps } from '@/types/tasks';
+import type { dueDateType } from '@/types/tasks';
 
-export const buildDueDateFilter = (
-  dueDate?: TaskSearchParams['dueDate']
-): Prisma.TaskWhereInput['dueDate'] => {
+export const buildDueDateFilter = (dueDate?: dueDateType): Prisma.TaskWhereInput['dueDate'] => {
   const today = new Date();
 
   switch (dueDate) {
@@ -63,7 +61,7 @@ export const buildDueDateFilter = (
   }
 };
 
-export const defaultDueDate = (date: TaskDialogProps['dueDate']) => {
+export const defaultDueDate = (date: TaskDialogProps['dueDate'] | null) => {
   let defaultDueDate = '';
   if (date) {
     const dateObj = new Date(date);

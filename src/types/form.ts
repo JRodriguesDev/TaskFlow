@@ -1,18 +1,19 @@
-export interface FormUserType {
+type FormType = {
   success?: boolean;
+  message?: string;
+};
+
+export type FormUserType = FormType & {
   errors?: {
     name?: string;
     password?: string;
   };
-  message?: string;
-}
+};
 
-export interface FormTaskType {
-  success?: boolean;
+export type FormTaskType = FormType & {
   errors?: {
-    title?: string | null;
-    description?: string | null;
-    dueDate?: string | null;
+    title?: string;
+    description?: string;
+    dueDate?: string;
   };
-  message?: string | null;
-}
+};
