@@ -28,7 +28,7 @@ export const createTask = async (
 export const updateTask = async (
   taskId: string,
   data: Omit<TaskSchema, 'syncCalendar'>,
-  eventId: string | undefined
+  eventId: string | undefined | null
 ) => {
   const task = await prisma.task.update({
     where: { id: taskId },

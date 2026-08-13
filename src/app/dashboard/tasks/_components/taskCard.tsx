@@ -37,6 +37,7 @@ export const TaskCard = ({
   status,
   createdAt,
   completedAt,
+  calendarEventId,
 }: TaskCardProps) => {
   const priorityStyle = priorityStyles[priority];
   const task = {
@@ -46,6 +47,7 @@ export const TaskCard = ({
     dueDate: dueDate,
     priority: priority,
     status: status,
+    calendarEventId: calendarEventId,
   };
   return (
     <Card

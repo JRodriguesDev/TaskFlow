@@ -14,8 +14,8 @@ import { auth } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
 import type { TaskSearchParams, TaskResponse } from '@/types/tasks';
 import { updateTag } from 'next/cache';
-import { createEvent, deleteEvent, editEvent } from '@/services/calendar/calendar';
-import { updateTaskHelper } from '@/lib/helpers/calendarApi';
+import { createEvent } from '@/services/calendar/calendar';
+import { syncCalendarUpdate, syncCalendarDelete } from '@/services/calendar/sync';
 
 export const createTaskAction = async (
   _prevState: FormTaskType,
@@ -57,7 +57,10 @@ export const createTaskAction = async (
     const taskUserId = await createTask(userId, task, eventId);
     updateTag(`tasksUser:${taskUserId}`);
   } catch (error) {
-    return { success: false, message: prismaErrors(error) ?? 'Error inteno' };
+    return {
+      success: false,
+      message: prismaErrors(error) ?? (error as Error)?.message ?? 'Error inteno',
+    };
   }
   return { success: true, message: task.title };
 };
@@ -88,30 +91,14 @@ export const taskUpdateAction = async (
   }
   const { id: taskId, syncCalendar, ...task } = validationFields.data;
   try {
-    const helper = await updateTaskHelper(taskId!, syncCalendar);
-    const eventId =
-      helper.action === 'CREATE'
-        ? await createEvent({
-            title: task.title,
-            description: task.description,
-            dueDate: task.dueDate,
-            priority: task.priority,
-          })
-        : helper.action === 'EDIT'
-          ? await editEvent({
-              eventId: helper.calendarId,
-              title: task.title,
-              description: task.description,
-              dueDate: task.dueDate,
-              priority: task.priority,
-            })
-          : helper.action === 'DELETE'
-            ? await deleteEvent(helper.calendarId!)
-            : undefined;
-    const taskUserId = await updateTask(taskId!, task, eventId ?? undefined);
+    const eventId = await syncCalendarUpdate(taskId!, syncCalendar, task);
+    const taskUserId = await updateTask(taskId!, task, eventId);
     updateTag(`tasksUser:${taskUserId}`);
   } catch (error) {
-    return { success: false, message: prismaErrors(error) ?? 'Error inteno' };
+    return {
+      success: false,
+      message: prismaErrors(error) ?? (error as Error)?.message ?? 'Error inteno',
+    };
   }
   return { success: true, message: task.title };
 };
@@ -149,10 +136,14 @@ export const statusChangeAction = async (
 
 export const deleteTaskAction = async (taskId: string): Promise<TaskResponse> => {
   try {
+    await syncCalendarDelete(taskId);
     const taskUserId = await deleteTask(taskId);
     updateTag(`tasksUser:${taskUserId}`);
     return { success: true };
   } catch (error) {
-    return { success: false, message: prismaErrors(error) ?? 'Error inteno' };
+    return {
+      success: false,
+      message: prismaErrors(error) ?? (error as Error)?.message ?? 'Error inteno',
+    };
   }
 };

@@ -28,6 +28,7 @@ export const TaskList = async ({ params }: { params: TaskSearchParams }) => {
           dueDate={el.dueDate}
           createdAt={el.createdAt}
           completedAt={el.completedAt}
+          calendarEventId={el.calendarEventId}
         />
       ))}
     </div>
