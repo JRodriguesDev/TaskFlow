@@ -39,6 +39,7 @@ export const jwtCallback: JwtType = async ({ token, user, trigger, session, acco
       expiresAt: Math.floor(Date.now() / 1000 + newTokens.expires_in),
       error: undefined,
     };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return {
       ...token,

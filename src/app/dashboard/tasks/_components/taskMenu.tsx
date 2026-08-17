@@ -77,6 +77,7 @@ export const TaskMenu = ({
     if (!task.success) toast.error(`Error: ${task.message} ao Deleta Tarefa`);
     router.refresh();
   };
+
   return (
     <div className="flex flex-col items-end gap-2">
       {statusBadge[statusOpmistic]}

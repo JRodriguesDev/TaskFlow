@@ -7,6 +7,8 @@ export const sessionCallback: SessionType = ({ session, token }) => {
   session.user.name = token.name;
   session.accessToken = token.accessToken;
   session.error = token.error;
+  session.isGoogleConnected = Boolean(token.refreshToken || token.accessToken);
+  session.hasCalendarError = token.error === 'RefreshTokenError';
 
   return session;
 };

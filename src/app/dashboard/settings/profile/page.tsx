@@ -10,13 +10,17 @@ import { ProfileForm } from './_components/profileForm';
 import { userHasAccount } from '@/services/DAL/user';
 import { GoogleAccountButton } from './_components/googleAccountButton';
 import { GoogleCalendarButton } from './_components/googleCalendarButton';
+import type { HasTokenGoogle } from '@/types/user';
 
 const Page = async () => {
   const session = await auth();
   if (!session?.user) redirect('/auth/login');
   const { id, name, email, image } = session.user;
-
   const hasGoogleAccount = await userHasAccount(id!);
+  const hasTokenGoogle: HasTokenGoogle = {
+    hasCalendarError: Boolean(session.hasCalendarError),
+    isGoogleConnected: session.isGoogleConnected,
+  };
 
   return (
     <div className="min-h-screen">
@@ -94,7 +98,7 @@ const Page = async () => {
                     </p>
                   </div>
                 </div>
-                <GoogleCalendarButton />
+                <GoogleCalendarButton hasTokenGoogle={hasTokenGoogle} />
               </div>
             </CardContent>
           </Card>

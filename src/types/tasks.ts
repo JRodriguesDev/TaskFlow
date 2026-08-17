@@ -9,7 +9,6 @@ export type TaskCardProps = Pick<
   | 'calendarEventId'
   | 'priority'
   | 'status'
-  | 'completedAt'
   | 'createdAt'
 > & {
   description?: Task['description'];

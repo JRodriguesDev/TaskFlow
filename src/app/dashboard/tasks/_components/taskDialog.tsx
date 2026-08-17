@@ -32,6 +32,8 @@ import { Label } from '@/components/ui/label';
 import { useRouter } from 'next/navigation';
 import type { TaskCardProps, TaskDialogProps } from '@/types/tasks';
 import { defaultDueDate } from '@/lib/helpers/dueDate';
+import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 
 type TaskDialogMode = 'create' | 'edit';
 
@@ -66,6 +68,12 @@ export const TaskDialog = ({
   const [syncCalendar, setSyncCalendar] = useState(!!task?.calendarEventId);
   const [state, formAction, pending] = useActionState(taskAction, formTaskState);
   const dueDate = defaultDueDate(task?.dueDate ? task.dueDate : null);
+  const { data: session } = useSession();
+
+  const { hasCalendarError, isGoogleConnected } = {
+    hasCalendarError: Boolean(session?.hasCalendarError),
+    isGoogleConnected: Boolean(session?.isGoogleConnected),
+  };
 
   useEffect(() => {
     if (state.success) {
@@ -193,21 +201,47 @@ export const TaskDialog = ({
           </div>
 
           <div className="flex items-center justify-between rounded-lg border p-3">
-            <div className="space-y-0.5">
+            <div className="space-y-0.5 pr-2">
               <Label htmlFor="syncCalendar">Adicionar ao Google Calendar</Label>
 
               <p className="text-xs text-muted-foreground">
-                Sincronizar esta tarefa com seu calendário.
+                {isGoogleConnected && !hasCalendarError ? (
+                  'Sincronizar esta tarefa com seu calendário.'
+                ) : isGoogleConnected && hasCalendarError ? (
+                  <span className="font-medium text-destructive">
+                    Sua conexão com o Google expirou.{' '}
+                    <Link
+                      href="/dashboard/settings/profile"
+                      className="underline underline-offset-2 hover:text-destructive/80"
+                    >
+                      Reconecte em configurações.
+                    </Link>
+                  </span>
+                ) : (
+                  <span>
+                    Nenhuma conta Google vinculada.{' '}
+                    <Link
+                      href="/dashboard/settings/profile"
+                      className="font-medium text-primary underline underline-offset-2 hover:text-primary/80"
+                    >
+                      Conecte em configurações
+                    </Link>{' '}
+                    para sincronizar.
+                  </span>
+                )}
               </p>
             </div>
 
             <Switch
               id="syncCalendar"
-              disabled={pending}
+              disabled={pending || !isGoogleConnected || hasCalendarError}
               checked={syncCalendar}
               onCheckedChange={setSyncCalendar}
-              defaultChecked={!!task?.calendarEventId}
+              className={
+                hasCalendarError ? 'border-destructive data-[state=checked]:bg-destructive' : ''
+              }
             />
+
             <input type="hidden" name="syncCalendar" value={syncCalendar ? 'true' : 'false'} />
           </div>
 
