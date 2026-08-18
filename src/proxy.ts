@@ -9,9 +9,12 @@ export const proxy = async (request: NextRequest) => {
 
   const isProtectedRoute = path.startsWith('/dashboard');
   const isAuth = path.startsWith('/auth');
+  const isRoot = path === '/';
 
-  if (!session && isProtectedRoute) return NextResponse.redirect(new URL('/auth/login', nextUrl));
-  if (session && isAuth) return NextResponse.redirect(new URL('/dashboard/overview', nextUrl));
+  if (!session && (isProtectedRoute || isRoot))
+    return NextResponse.redirect(new URL('/auth/login', nextUrl));
+  if (session && (isAuth || isRoot))
+    return NextResponse.redirect(new URL('/dashboard/overview', nextUrl));
 
   return NextResponse.next();
 };
