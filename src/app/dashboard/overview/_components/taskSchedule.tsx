@@ -4,6 +4,7 @@ import { RiCalendarLine, RiAlarmWarningLine } from 'react-icons/ri';
 import { taskScheduleAction } from '../actions';
 import { OverviewError } from './overviewError';
 import { TaskDialog } from './taskDialog';
+import { StaggerContainer, StaggerItem } from '@/app/_components/motions';
 
 export const TaskSchedule = async ({ userId }: { userId: string }) => {
   const data = await taskScheduleAction(userId);
@@ -27,11 +28,20 @@ export const TaskSchedule = async ({ userId }: { userId: string }) => {
                 <p>Nenhuma tarefa agendada para hoje.</p>
               </div>
             ) : (
-              data.tasks!.todayTasks.map((task, i) => (
-                <TaskDialog key={i} task={task}>
-                  <Task key={i} title={task.title} priority={task.priority} status={task.status} />
-                </TaskDialog>
-              ))
+              <StaggerContainer className="max-h-45 space-y-2 overflow-y-auto">
+                {data.tasks!.todayTasks.map((task, i) => (
+                  <StaggerItem key={i}>
+                    <TaskDialog key={i} task={task}>
+                      <Task
+                        key={i}
+                        title={task.title}
+                        priority={task.priority}
+                        status={task.status}
+                      />
+                    </TaskDialog>
+                  </StaggerItem>
+                ))}
+              </StaggerContainer>
             )}
           </CardContent>
         </Card>

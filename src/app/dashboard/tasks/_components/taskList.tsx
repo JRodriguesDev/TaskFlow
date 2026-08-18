@@ -5,6 +5,7 @@ import { listTasksAction } from '../actions';
 import { ErrorTasks } from './errorTask';
 import { auth } from '@/lib/authjs/authjs';
 import { redirect } from 'next/navigation';
+import { StaggerContainer, StaggerItem } from '@/app/_components/motions';
 
 export const TaskList = async ({ params }: { params: TaskSearchParams }) => {
   const session = await auth();
@@ -16,10 +17,12 @@ export const TaskList = async ({ params }: { params: TaskSearchParams }) => {
   if (tasks.length === 0) return <EmptyTasks />;
 
   return (
-    <div className="space-y-4 p-6">
+    <StaggerContainer className="space-y-4 p-6">
       {tasks.map((el, i) => (
-        <TaskCard key={i} task={el} />
+        <StaggerItem key={i}>
+          <TaskCard key={i} task={el} />
+        </StaggerItem>
       ))}
-    </div>
+    </StaggerContainer>
   );
 };

@@ -33,3 +33,57 @@ export const FormError = ({ children }: { children: React.ReactNode }) => {
     </motion.div>
   );
 };
+
+export const StaggerContainer = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <motion.div
+      className={className}
+      initial="hidden"
+      animate="show"
+      variants={{
+        hidden: { opacity: 0 },
+        show: {
+          opacity: 1,
+          transition: {
+            staggerChildren: 0.05, // Intervalo bem suave entre cada item
+          },
+        },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};
+
+export const StaggerItem = ({
+  children,
+  className,
+}: {
+  children: React.ReactNode;
+  className?: string;
+}) => {
+  return (
+    <motion.div
+      className={className}
+      variants={{
+        hidden: { opacity: 0, y: 10 },
+        show: {
+          opacity: 1,
+          y: 0,
+          transition: {
+            duration: 0.3,
+            ease: 'easeOut',
+          },
+        },
+      }}
+    >
+      {children}
+    </motion.div>
+  );
+};

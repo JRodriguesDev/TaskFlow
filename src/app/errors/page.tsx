@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
+import { FadeIn } from '@/app/_components/motions';
 
 const errorMessages: Record<string, string> = {
   EmailMismatch: 'A conta Google selecionada possui um e-mail diferente da sua conta atual.',
@@ -28,15 +29,17 @@ const Page = async ({ searchParams }: { searchParams: Promise<{ error?: string }
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
-      <div className="w-full max-w-md space-y-6 text-center">
-        <h1 className="text-2xl font-bold">Ocorreu um erro</h1>
+      <FadeIn>
+        <div className="w-full max-w-md space-y-6 text-center">
+          <h1 className="text-2xl font-bold">Ocorreu um erro</h1>
 
-        <p className="text-muted-foreground">{message}</p>
+          <p className="text-muted-foreground">{message}</p>
 
-        <Button asChild>
-          <Link href="/dashboard/settings/profile">Voltar</Link>
-        </Button>
-      </div>
+          <Button asChild>
+            <Link href="/dashboard/settings/profile">Voltar</Link>
+          </Button>
+        </div>
+      </FadeIn>
     </div>
   );
 };
