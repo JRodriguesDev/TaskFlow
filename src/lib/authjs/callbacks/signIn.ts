@@ -12,7 +12,7 @@ export const signInCallback: SignInType = async ({ profile }) => {
   const currentEmail = session.user?.email;
   const googleEmail = profile?.email;
 
-  if (currentEmail !== googleEmail) return '/errors/auth?error=EmailMismatch';
+  if (currentEmail !== googleEmail) return '/errors?error=EmailMismatch';
   if (session) await updateUser(userId!, { image: profile?.picture });
 
   return true;
