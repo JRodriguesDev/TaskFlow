@@ -7,8 +7,8 @@ export const formUserState: FormUserType = {
 export const formTaskState: FormTaskType = {
   success: false,
   errors: {
-    title: null,
-    description: null,
-    dueDate: null,
+    title: undefined,
+    description: undefined,
+    dueDate: undefined,
   },
 };

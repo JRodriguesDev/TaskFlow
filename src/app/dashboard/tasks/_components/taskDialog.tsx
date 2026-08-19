@@ -57,7 +57,7 @@ export const TaskDialog = ({
 }: {
   mode: TaskDialogMode;
   task?: TaskDialogProps;
-  trigger: React.ReactNode;
+  trigger?: React.ReactNode;
 }) => {
   const taskAction = mode === 'create' ? createTaskAction : taskUpdateAction;
   const config = dialogConfig[mode];
